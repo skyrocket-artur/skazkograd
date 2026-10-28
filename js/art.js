@@ -211,10 +211,43 @@
       `<path d="M58 28 Q78 8 98 30 Z" fill="#FFB800"/><g stroke="#fff" stroke-width="2.5" fill="none" opacity=".55"><path d="M74 44 Q82 64 74 84"/><path d="M90 44 Q98 64 90 84"/></g>` +
       `<circle cx="40" cy="58" r="9" fill="#fff"/><circle cx="38" cy="59" r="5" fill="#2B2140"/><path d="M18 74 Q26 79 32 74" stroke="#C47A00" stroke-width="3" fill="none" stroke-linecap="round"/>` +
       `<path d="M48 26 L52 8 L60 20 L68 4 L74 20 L82 8 L84 26 Z" fill="#FFD23F" stroke="#E89B00" stroke-width="2"/>` },
+    // ---------- мир 2: Теремок ----------
+    mouse: { w: 200, h: 214, svg:
+      `<defs>${rg('ms', [[0, '#F6F2FC'], [0.6, '#CCC4DE'], [1, '#9E95B6']])}${CK}</defs>` +
+      `<path d="M146 192 Q198 188 190 150 Q184 124 160 132" stroke="#EBA8BA" stroke-width="7" fill="none" stroke-linecap="round"/>` +
+      `<circle cx="52" cy="62" r="36" fill="url(#ms)"/><circle cx="52" cy="62" r="23" fill="#FFC4D3"/>` +
+      `<circle cx="148" cy="62" r="36" fill="url(#ms)"/><circle cx="148" cy="62" r="23" fill="#FFC4D3"/>` +
+      `<ellipse cx="100" cy="172" rx="46" ry="36" fill="url(#ms)"/><ellipse cx="100" cy="180" rx="28" ry="24" fill="#FBF8FF"/>` +
+      `<ellipse cx="76" cy="206" rx="16" ry="7" fill="#F2A9BC"/><ellipse cx="124" cy="206" rx="16" ry="7" fill="#F2A9BC"/>` +
+      `<ellipse cx="100" cy="112" rx="54" ry="48" fill="url(#ms)"/>` + shine(78, 82, 18, 10) +
+      eye(80, 106, 11, 13, 7.5) + eye(120, 106, 11, 13, 7.5) + cheek(64, 130) + cheek(136, 130) +
+      `<ellipse cx="100" cy="134" rx="21" ry="14" fill="#FBF8FF"/><ellipse cx="100" cy="128" rx="8" ry="6" fill="#FF7D9C"/>` +
+      `<path d="M100 134 v5 M100 139 q-6 5 -10 1 M100 139 q6 5 10 1" stroke="#6B5B70" stroke-width="2.5" fill="none" stroke-linecap="round"/>` +
+      `<path d="M78 132 L52 126 M78 138 L52 140 M122 132 L148 126 M122 138 L148 140" stroke="#A9A2BD" stroke-width="1.6" stroke-linecap="round"/>` +
+      `<ellipse cx="82" cy="160" rx="10" ry="8" fill="#E6E0F0"/><ellipse cx="118" cy="160" rx="10" ry="8" fill="#E6E0F0"/>` },
+    frog: { w: 220, h: 196, svg:
+      `<defs>${rg('fg', [[0, '#BDF292'], [0.55, '#6CCB4A'], [1, '#3D9A2E']])}${CK}</defs>` +
+      `<ellipse cx="44" cy="164" rx="32" ry="18" fill="url(#fg)" transform="rotate(-20 44 164)"/><ellipse cx="176" cy="164" rx="32" ry="18" fill="url(#fg)" transform="rotate(20 176 164)"/>` +
+      `<ellipse cx="110" cy="132" rx="72" ry="54" fill="url(#fg)"/><ellipse cx="110" cy="152" rx="44" ry="32" fill="#E9FBD2"/>` +
+      `<circle cx="68" cy="64" r="31" fill="url(#fg)"/><circle cx="152" cy="64" r="31" fill="url(#fg)"/>` + shine(60, 48, 12, 7) +
+      eye(68, 64, 19, 20, 11) + eye(152, 64, 19, 20, 11) + cheek(62, 120, 'ck', 15, 9) + cheek(158, 120, 'ck', 15, 9) +
+      `<circle cx="101" cy="100" r="2.5" fill="#2E6B24"/><circle cx="119" cy="100" r="2.5" fill="#2E6B24"/>` +
+      `<path d="M66 112 Q110 152 154 112" stroke="#2E6B24" stroke-width="5" fill="none" stroke-linecap="round"/>` +
+      `<path d="M100 128 Q110 138 120 128 Q110 124 100 128 Z" fill="#FF7B8A"/>` +
+      `<ellipse cx="80" cy="184" rx="20" ry="8" fill="#4DAA36"/><ellipse cx="140" cy="184" rx="20" ry="8" fill="#4DAA36"/>` },
+    apple: { w: 100, h: 112, svg:
+      `<defs>${rg('apl', [[0, '#FF9A8A'], [0.5, '#F23A3A'], [1, '#B51C24']])}</defs>` +
+      `<path d="M50 32 C20 18 4 42 8 68 C12 94 32 110 50 102 C68 110 88 94 92 68 C96 42 80 18 50 32 Z" fill="url(#apl)"/>` +
+      shine(30, 50, 8, 14, 20, 0.5) +
+      `<path d="M50 32 Q52 18 58 10" stroke="#6B4A2A" stroke-width="5" fill="none" stroke-linecap="round"/>` +
+      `<path d="M56 20 Q74 6 90 16 Q74 30 56 20 Z" fill="#5CB547"/>` },
     finger: { w: 120, h: 140, svg:
       `<path d="M44 66 L44 18 Q44 4 56 4 Q68 4 68 18 L68 58 Q72 50 82 52 Q92 54 92 64 Q98 58 106 62 Q114 66 112 78 L110 104 Q106 132 78 136 L60 136 Q38 134 28 112 L14 84 Q8 72 18 68 Q28 64 36 76 L44 88 Z" fill="#FFE3C7" stroke="#2B2140" stroke-width="5" stroke-linejoin="round"/>` +
       `<path d="M68 60 L68 80 M92 64 L92 82" stroke="#2B2140" stroke-width="4" stroke-linecap="round"/>` }
   };
+
+  // Волк без праздничного колпака — для «Теремка»
+  { const s = ART.wolf.svg, i = s.lastIndexOf('<g transform="rotate(14 112 40)">'); ART.wolf_plain = { w: ART.wolf.w, h: ART.wolf.h, svg: s.slice(0, i) }; }
 
   const cache = {};
   const art = G.art = {

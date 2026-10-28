@@ -1,12 +1,12 @@
 // Офлайн-кэш. Игра работает и без него (во встроенном браузере Instagram на iPhone его нет).
 // Файлы кладутся по одному: если один не скачался, остальные всё равно в кэше.
 // Версию меняет tools/bump.mjs — вместе с ?v= в index.html.
-const V = 3;
+const V = 4;
 const CACHE = 'skazkograd-' + V;
 const Q = '?v=' + V;
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',
   'css/app.css' + Q, 'js/core.js' + Q, 'js/audio.js' + Q, 'js/lines.js' + Q, 'js/voice-packs.js' + Q, 'js/art.js' + Q,
-  'js/game.js' + Q, 'js/ui.js' + Q, 'js/levels/w1.js' + Q, 'js/app.js' + Q];
+  'js/game.js' + Q, 'js/ui.js' + Q, 'js/levels/common.js' + Q, 'js/levels/w1.js' + Q, 'js/levels/w2.js' + Q, 'js/app.js' + Q];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE)

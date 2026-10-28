@@ -147,6 +147,7 @@
       for (let i = 0; i < 6; i++) tone({ f: G.rand(2000, 3200), t: 0.7 + i * 0.05, dur: 0.12, vol: 0.04 });
     },
     whoosh() { noise({ dur: 0.35, vol: 0.14, freq: 500, sweep: 2600, kind: 'bandpass', q: 1.4 }); },
+    flip() { noise({ dur: 0.12, vol: 0.12, freq: 900, sweep: 3200, kind: 'bandpass', q: 1.2 }); tone({ f: 700, slide: 1000, type: 'triangle', dur: 0.06, vol: 0.06 }); },
     boing() { tone({ f: 180, slide: 420, dur: 0.12, vol: 0.2 }); tone({ f: 420, slide: 200, t: 0.12, dur: 0.18, vol: 0.16 }); },
     lcd() { tone({ f: 2093, type: 'square', dur: 0.045, vol: 0.05 }); },
     drop() { tone({ f: 260, slide: 120, dur: 0.1, vol: 0.18 }); noise({ dur: 0.08, vol: 0.1, freq: 800 }); },
@@ -165,7 +166,9 @@
     map: { bpm: 104, lead: [72, null, 76, 79, null, 76, 74, null, 72, null, 69, 72, null, null, 74, null, 76, null, 79, 81, null, 79, 76, null, 74, null, 72, 74, null, null, null, null],
       bass: [48, null, null, null, 55, null, null, null, 45, null, null, null, 52, null, null, null, 53, null, null, null, 48, null, null, null, 50, null, null, null, 55, null, null, null] },
     forest: { bpm: 116, lead: [74, 76, 78, null, 81, null, 78, null, 76, 74, 76, null, 71, null, null, null, 74, 76, 78, null, 81, null, 83, 81, 78, null, 76, null, 74, null, null, null],
-      bass: [50, null, 57, null, 50, null, 57, null, 47, null, 54, null, 47, null, 54, null, 43, null, 50, null, 43, null, 50, null, 45, null, 52, null, 50, null, null, null] }
+      bass: [50, null, 57, null, 50, null, 57, null, 47, null, 54, null, 47, null, 54, null, 43, null, 50, null, 43, null, 50, null, 45, null, 52, null, 50, null, null, null] },
+    meadow: { bpm: 112, lead: [79, null, 76, null, 74, 76, 79, null, 81, null, 79, 76, 74, null, null, null, 76, null, 74, null, 72, 74, 76, null, 74, 72, 71, null, 67, null, null, null],
+      bass: [43, null, null, null, 50, null, null, null, 48, null, null, null, 50, null, null, null, 52, null, null, null, 48, null, null, null, 50, null, null, null, 43, null, 50, null] }
   };
   // want — какая музыка должна играть на этом экране; если музыка выключена, планировщик не крутится вовсе
   const M = G.music = {

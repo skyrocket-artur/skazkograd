@@ -49,8 +49,10 @@
   };
 
   G.WORLDS = [
-    { id: 'w1', title: 'Колобок', learn: 'цифры 1–3 · буква А · цвета', art: 'kolobok', open: true, cls: 'w-forest', task: 'w1_task', done: 'w1_done', intro: 'w1_intro' },
-    { id: 'w2', title: 'Теремок', learn: 'цифры 4–5 · буква О · фигуры', art: 'teremok', cls: 'w-meadow' },
+    { id: 'w1', title: 'Колобок', learn: 'цифры 1–3 · буква А · цвета', art: 'kolobok', open: true, cls: 'w-forest', task: 'w1_task', done: 'w1_done', intro: 'w1_intro',
+      music: 'forest', friends: ['hare', 'wolf', 'kolobok', 'bear', 'fox'], deco: ['tree_fir', 'tree_round', 'tree_fir', 'bush'] },
+    { id: 'w2', title: 'Теремок', learn: 'цифры 4–5 · буква О · фигуры', art: 'teremok', open: true, cls: 'w-meadow', task: 'w2_task', done: 'w2_done', intro: 'w2_intro',
+      music: 'meadow', friends: ['mouse', 'frog', 'teremok', 'hare', 'fox'], deco: ['tree_round', 'bush', 'tree_round', 'bush'] },
     { id: 'w3', title: 'Репка', learn: 'цифры 6–7 · буква У · порядок', art: 'repka', cls: 'w-garden' },
     { id: 'w4', title: 'Три медведя', learn: 'цифры 8–9 · буквы И, Ы · размеры', art: 'bear', cls: 'w-bears' },
     { id: 'w5', title: 'Золотая рыбка', learn: 'цифра 10 · сложение', art: 'rybka', cls: 'w-sea' }
@@ -138,13 +140,13 @@
   }
 
   ui.world = function (w, justDone) {
-    G.music.play('forest');
+    G.music.play(w.music || 'forest');
     const ls = levelsOf(w);
     const back = h('button', { class: 'icon-btn', 'aria-label': 'Назад', html: G.ICON.back });
     const field = h('div', { class: 'path-field' });
     const svgPath = PATH.map((p, i) => (i ? 'L' : 'M') + p[0] + ' ' + p[1]).join(' ');
     field.append(h('div', { class: 'path-line', html: `<svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${svgPath}" /></svg>` }));
-    ['tree_fir', 'tree_round', 'tree_fir', 'bush', 'tree_round'].forEach((t, i) => field.append(G.art.img(t, 'deco d' + i)));
+    (w.deco || ['tree_fir', 'tree_round', 'tree_fir', 'bush']).forEach((t, i) => field.append(G.art.img(t, 'deco d' + i)));
     const next = ls.find(l => !isDone(l) && unlocked(w, l));
     ls.forEach((l, i) => {
       const p = PATH[i] || [50, 50];
@@ -205,7 +207,7 @@
         h('div', { class: 'stars big' }, h('i', { html: G.ICON.star }), h('i', { html: G.ICON.star }), h('i', { html: G.ICON.star })),
         h('h2', null, `Сказка «${w.title}» пройдена!`),
         name ? h('p', { class: 'gr-name' }, `Молодец, ${name}!`) : null,
-        h('div', { class: 'gr-friends' }, ...['hare', 'wolf', 'kolobok', 'bear', 'fox'].map(n => G.art.img(n)))),
+        h('div', { class: 'gr-friends' }, ...(w.friends || ['hare', 'wolf', 'kolobok', 'bear', 'fox']).map(n => G.art.img(n)))),
       rest,
       h('div', { class: 'wd-actions' }, share, toMap));
     ui.mount(el);
@@ -285,7 +287,7 @@
         h('section', { class: 'p-card' },
           h('h3', null, 'Что в игре'),
           h('p', null, '5 сказок по 5 уровней, около часа игры. Цифры от 1 до 10, гласные буквы, цвета, фигуры, размеры и порядок. Проиграть нельзя, подсказка всегда бесплатная. Без рекламы и покупок.'),
-          h('p', { class: 'muted' }, 'Сейчас открыта сказка «Колобок», остальные — скоро. После каждой сказки игра предлагает отдохнуть: для 3–4 лет лучше играть по 15–20 минут.')),
+          h('p', { class: 'muted' }, 'Сейчас открыты сказки «Колобок» и «Теремок», остальные — скоро. После каждой сказки игра предлагает отдохнуть: для 3–4 лет лучше играть по 15–20 минут.')),
         h('section', { class: 'p-card' },
           h('label', { class: 'p-row col' }, h('span', null, 'Имя ребёнка (для грамоты)'), name),
           h('p', { class: 'muted' }, 'Имя хранится только на этом телефоне и никуда не отправляется.')),
