@@ -22,7 +22,7 @@
   const q = new URLSearchParams(location.search);
   if (G.AUTO) {
     // Робот-тестировщик: проходит мир от начала до конца
-    G.store.s.done = {}; G.store.s.greeted = true; G.store.s.seen_w1 = G.store.s.seen_w2 = true;
+    G.store.s.done = {}; G.store.s.greeted = true; G.WORLDS.forEach(w => { G.store.s['seen_' + w.id] = true; });
     G.ui.map();
     const l = G.LEVELS.find(x => x.id === (q.get('level') || 'w1l1'));
     setTimeout(() => G.startLevel(l.world, l.id), 300);

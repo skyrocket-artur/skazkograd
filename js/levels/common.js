@@ -21,7 +21,7 @@
       x.lineTo(W, st.gy - top + 4); x.closePath(); x.fill();
     }
     st.resize = () => {
-      W = api.W; H = api.H; st.gy = Math.round(H * (o.ground || 0.8));
+      W = api.W; H = api.H; st.gy = Math.round(H * ((typeof o.ground === 'function' ? o.ground() : o.ground) || 0.8));
       let x;
       [sky, x] = mk(W, H);
       const g = x.createLinearGradient(0, 0, 0, st.gy);

@@ -53,11 +53,18 @@
       music: 'forest', friends: ['hare', 'wolf', 'kolobok', 'bear', 'fox'], deco: ['tree_fir', 'tree_round', 'tree_fir', 'bush'] },
     { id: 'w2', title: 'Теремок', learn: 'цифры 4–5 · буква О · фигуры', art: 'teremok', open: true, cls: 'w-meadow', task: 'w2_task', done: 'w2_done', intro: 'w2_intro',
       music: 'meadow', friends: ['mouse', 'frog', 'teremok', 'hare', 'fox'], deco: ['tree_round', 'bush', 'tree_round', 'bush'] },
-    { id: 'w3', title: 'Репка', learn: 'цифры 6–7 · буква У · порядок', art: 'repka', cls: 'w-garden' },
+    { id: 'w3', title: 'Репка', learn: 'цифры 6–7 · буква У · порядок', art: 'repka', open: true, cls: 'w-garden', task: 'w3_task', done: 'w3_done', intro: 'w3_intro',
+      music: 'garden', friends: ['ded', 'babka', 'repka', 'vnuchka', 'mouse'], deco: ['tree_round', 'bush', 'tree_fir', 'bush'] },
     { id: 'w4', title: 'Три медведя', learn: 'цифры 8–9 · буквы И, Ы · размеры', art: 'bear', cls: 'w-bears' },
     { id: 'w5', title: 'Золотая рыбка', learn: 'цифра 10 · сложение', art: 'rybka', cls: 'w-sea' }
   ];
   const levelsOf = w => G.LEVELS.filter(l => l.world === w.id).sort((a, b) => a.n - b.n);
+  // «Сейчас открыты сказки …» — для экрана родителей
+  const openText = () => {
+    const o = G.WORLDS.filter(w => w.open && levelsOf(w).length).map(w => `«${w.title}»`);
+    if (o.length === G.WORLDS.length) return 'Открыты все пять сказок.';
+    return `Сейчас открыты сказки ${o.slice(0, -1).join(', ')}${o.length > 1 ? ' и ' : ''}${o[o.length - 1]}, остальные — скоро.`;
+  };
   const isDone = l => !!S().done[l.id];
   const unlocked = (w, l) => S().unlockAll || l.n === 1 || levelsOf(w).filter(x => x.n < l.n).every(isDone);
   const worldDone = w => { const ls = levelsOf(w); return ls.length > 0 && ls.every(isDone); };
@@ -287,7 +294,7 @@
         h('section', { class: 'p-card' },
           h('h3', null, 'Что в игре'),
           h('p', null, '5 сказок по 5 уровней, около часа игры. Цифры от 1 до 10, гласные буквы, цвета, фигуры, размеры и порядок. Проиграть нельзя, подсказка всегда бесплатная. Без рекламы и покупок.'),
-          h('p', { class: 'muted' }, 'Сейчас открыты сказки «Колобок» и «Теремок», остальные — скоро. После каждой сказки игра предлагает отдохнуть: для 3–4 лет лучше играть по 15–20 минут.')),
+          h('p', { class: 'muted' }, openText() + ' После каждой сказки игра предлагает отдохнуть: для 3–4 лет лучше играть по 15–20 минут.')),
         h('section', { class: 'p-card' },
           h('label', { class: 'p-row col' }, h('span', null, 'Имя ребёнка (для грамоты)'), name),
           h('p', { class: 'muted' }, 'Имя хранится только на этом телефоне и никуда не отправляется.')),

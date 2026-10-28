@@ -241,6 +241,111 @@
       shine(30, 50, 8, 14, 20, 0.5) +
       `<path d="M50 32 Q52 18 58 10" stroke="#6B4A2A" stroke-width="5" fill="none" stroke-linecap="round"/>` +
       `<path d="M56 20 Q74 6 90 16 Q74 30 56 20 Z" fill="#5CB547"/>` },
+    // ---------- мир 3: Репка ----------
+    ded: { w: 200, h: 250, svg:
+      `<defs>${rg('dsk', [[0, '#FFEBD8'], [0.6, '#FFD2AE'], [1, '#EDAE85']])}${rg('dsh', [[0, '#FF8A6E'], [0.6, '#E0533D'], [1, '#B8382A']])}${rg('dbd', [[0, '#FFFFFF'], [0.7, '#EEF0F5'], [1, '#C9CEDB']])}${CK}</defs>` +
+      `<ellipse cx="76" cy="238" rx="24" ry="11" fill="#6B4A2A"/><ellipse cx="124" cy="238" rx="24" ry="11" fill="#6B4A2A"/>` +
+      `<rect x="62" y="204" width="30" height="34" rx="10" fill="#4C6FA8"/><rect x="108" y="204" width="30" height="34" rx="10" fill="#4C6FA8"/>` +
+      `<ellipse cx="46" cy="176" rx="16" ry="30" fill="url(#dsh)" transform="rotate(18 46 176)"/><ellipse cx="154" cy="176" rx="16" ry="30" fill="url(#dsh)" transform="rotate(-18 154 176)"/>` +
+      `<circle cx="39" cy="202" r="12" fill="url(#dsk)"/><circle cx="161" cy="202" r="12" fill="url(#dsk)"/>` +
+      `<path d="M52 214 Q48 150 100 142 Q152 150 148 214 Q100 226 52 214 Z" fill="url(#dsh)"/>` +
+      `<path d="M52 198 Q100 210 148 198 L148 208 Q100 220 52 208 Z" fill="#FFD23F"/>` +
+      `<ellipse cx="54" cy="94" rx="13" ry="16" fill="url(#dsk)"/><ellipse cx="146" cy="94" rx="13" ry="16" fill="url(#dsk)"/>` +
+      `<circle cx="100" cy="90" r="52" fill="url(#dsk)"/>` + shine(84, 54, 17, 9) +
+      `<path d="M50 88 Q44 62 64 54 Q58 72 66 90 Z" fill="url(#dbd)"/><path d="M150 88 Q156 62 136 54 Q142 72 134 90 Z" fill="url(#dbd)"/>` +
+      `<path d="M66 72 Q78 62 92 70 M108 70 Q122 62 134 72" stroke="#B9BFCC" stroke-width="7" stroke-linecap="round" fill="none"/>` +
+      eye(80, 90, 10, 12, 7) + eye(120, 90, 10, 12, 7) + cheek(64, 110) + cheek(136, 110) +
+      `<path d="M52 100 Q48 160 100 190 Q152 160 148 100 Q136 122 100 120 Q64 122 52 100 Z" fill="url(#dbd)"/>` +
+      `<path d="M90 132 Q100 140 110 132" stroke="#C9737A" stroke-width="3.5" fill="none" stroke-linecap="round"/>` +
+      `<path d="M100 114 Q86 104 72 114 Q84 128 100 120 Q116 128 128 114 Q114 104 100 114 Z" fill="#fff" stroke="#D9DDE6" stroke-width="1.5"/>` +
+      `<ellipse cx="100" cy="106" rx="11" ry="9" fill="#F2A98A"/><ellipse cx="96" cy="103" rx="4" ry="2.5" fill="#fff" opacity=".6"/>` },
+
+    babka: { w: 200, h: 240, svg:
+      `<defs>${rg('bsk', [[0, '#FFEBD8'], [0.6, '#FFD2AE'], [1, '#EDAE85']])}${rg('bdr', [[0, '#8DB2F5'], [0.6, '#4A78D0'], [1, '#2F55A8']])}${rg('bsc', [[0, '#FF8A8A'], [0.6, '#E53950'], [1, '#B31E3A']])}${CK}</defs>` +
+      `<ellipse cx="78" cy="230" rx="20" ry="9" fill="#6B4A2A"/><ellipse cx="122" cy="230" rx="20" ry="9" fill="#6B4A2A"/>` +
+      `<ellipse cx="50" cy="172" rx="15" ry="28" fill="url(#bdr)" transform="rotate(16 50 172)"/><ellipse cx="150" cy="172" rx="15" ry="28" fill="url(#bdr)" transform="rotate(-16 150 172)"/>` +
+      `<circle cx="44" cy="196" r="11" fill="url(#bsk)"/><circle cx="156" cy="196" r="11" fill="url(#bsk)"/>` +
+      `<path d="M60 142 Q100 130 140 142 Q162 196 160 226 Q100 238 40 226 Q38 196 60 142 Z" fill="url(#bdr)"/>` +
+      `<path d="M74 160 Q100 154 126 160 L132 222 Q100 230 68 222 Z" fill="#FFF6E8"/>` +
+      `<path d="M72 176 L80 170 L88 176 L96 170 L104 176 L112 170 L120 176 L128 170" stroke="#E53950" stroke-width="3" fill="none" stroke-linejoin="round"/>` +
+      `<path d="M40 100 Q36 30 100 28 Q164 30 160 100 Q162 136 136 148 L100 138 L64 148 Q38 136 40 100 Z" fill="url(#bsc)"/>` +
+      `<circle cx="100" cy="98" r="44" fill="url(#bsk)"/>` +
+      `<path d="M64 78 Q80 66 100 68 Q120 66 136 78 Q118 74 100 76 Q82 74 64 78 Z" fill="#D9DDE6"/>` +
+      `<path d="M52 94 Q54 46 100 44 Q146 46 148 94 Q140 64 100 62 Q60 64 52 94 Z" fill="url(#bsc)"/>` +
+      `<g fill="#fff" opacity=".9"><circle cx="72" cy="44" r="4"/><circle cx="100" cy="35" r="4"/><circle cx="128" cy="44" r="4"/><circle cx="50" cy="78" r="3.5"/><circle cx="150" cy="78" r="3.5"/><circle cx="86" cy="54" r="3"/><circle cx="114" cy="54" r="3"/><circle cx="48" cy="116" r="3"/><circle cx="152" cy="116" r="3"/></g>` +
+      eye(82, 100, 10, 12, 7) + eye(118, 100, 10, 12, 7) + cheek(68, 118) + cheek(132, 118) +
+      `<ellipse cx="100" cy="112" rx="6" ry="5" fill="#F2A98A"/>` +
+      `<path d="M86 124 Q100 134 114 124" stroke="#8A3B44" stroke-width="3.5" fill="none" stroke-linecap="round"/>` +
+      `<path d="M92 140 L100 134 L108 140 L104 158 L100 150 L96 158 Z" fill="#C92642"/><circle cx="100" cy="140" r="7" fill="#E53950"/>` },
+
+    vnuchka: { w: 200, h: 236, svg:
+      `<defs>${rg('vsk', [[0, '#FFEFE0'], [0.6, '#FFD8B8'], [1, '#F0B48E']])}${rg('vdr', [[0, '#FFB3CC'], [0.6, '#FF6F9F'], [1, '#D9437A']])}${rg('vhr', [[0, '#FFE7A0'], [0.6, '#F6C24E'], [1, '#D99A2A']])}${CK}</defs>` +
+      `<path d="M138 96 Q172 138 160 188" stroke="#E2AA3A" stroke-width="18" stroke-linecap="round" fill="none"/>` +
+      `<path d="M148 120 l12 4 M154 140 l12 2 M157 160 l11 0 M157 176 l10 -2" stroke="#C98A22" stroke-width="3" stroke-linecap="round"/>` +
+      `<rect x="74" y="204" width="16" height="22" rx="7" fill="#fff"/><rect x="110" y="204" width="16" height="22" rx="7" fill="#fff"/>` +
+      `<ellipse cx="80" cy="228" rx="17" ry="8" fill="#D9437A"/><ellipse cx="120" cy="228" rx="17" ry="8" fill="#D9437A"/>` +
+      `<ellipse cx="58" cy="166" rx="13" ry="24" fill="#FFF3F7" transform="rotate(16 58 166)"/><ellipse cx="142" cy="166" rx="13" ry="24" fill="#FFF3F7" transform="rotate(-16 142 166)"/>` +
+      `<circle cx="53" cy="188" r="10" fill="url(#vsk)"/><circle cx="147" cy="188" r="10" fill="url(#vsk)"/>` +
+      `<path d="M72 140 Q100 132 128 140 L152 216 Q100 228 48 216 Z" fill="url(#vdr)"/>` +
+      `<path d="M78 140 Q100 150 122 140 L118 156 Q100 162 82 156 Z" fill="#FFF3F7"/>` +
+      `<circle cx="100" cy="176" r="4" fill="#FFD23F"/><circle cx="100" cy="194" r="4" fill="#FFD23F"/>` +
+      `<path d="M52 208 Q100 220 148 208" stroke="#FFD23F" stroke-width="5" fill="none"/>` +
+      `<path d="M150 192 L136 180 L138 202 Z M172 192 L186 180 L184 202 Z" fill="#4C8DF0"/><circle cx="161" cy="192" r="6" fill="#2F6FE0"/>` +
+      `<circle cx="100" cy="94" r="48" fill="url(#vsk)"/>` +
+      `<path d="M50 98 Q44 38 100 36 Q156 38 150 98 Q146 70 124 60 Q112 74 100 68 Q88 74 76 60 Q54 70 50 98 Z" fill="url(#vhr)"/>` +
+      `<path d="M56 70 Q100 40 144 70" stroke="#E53950" stroke-width="7" fill="none" stroke-linecap="round"/>` +
+      eye(82, 98, 11, 13, 7.5) + eye(118, 98, 11, 13, 7.5) +
+      `<path d="M70 88 l-5 -4 M74 85 l-3 -5 M130 88 l5 -4 M126 85 l3 -5" stroke="#2B2140" stroke-width="2.5" stroke-linecap="round"/>` +
+      cheek(66, 118) + cheek(134, 118) + `<ellipse cx="100" cy="112" rx="4" ry="3" fill="#F0A487"/>` +
+      `<path d="M88 122 Q100 132 112 122 Q106 130 100 130 Q94 130 88 122 Z" fill="#C2405A"/>` },
+
+    zhuchka: { w: 210, h: 200, svg:
+      `<defs>${rg('zb', [[0, '#857A92'], [0.6, '#544A60'], [1, '#2F2838']])}${rg('zm', [[0, '#FFF6E8'], [1, '#E5CDAE']])}${CK}</defs>` +
+      `<path d="M158 150 Q198 126 186 92" stroke="#544A60" stroke-width="16" stroke-linecap="round" fill="none"/>` +
+      `<ellipse cx="108" cy="154" rx="56" ry="40" fill="url(#zb)"/><ellipse cx="98" cy="162" rx="30" ry="26" fill="url(#zm)"/>` +
+      `<ellipse cx="78" cy="190" rx="18" ry="9" fill="#E5CDAE"/><ellipse cx="122" cy="190" rx="18" ry="9" fill="#E5CDAE"/>` +
+      `<ellipse cx="98" cy="86" rx="54" ry="48" fill="url(#zb)"/>` + shine(78, 56, 14, 8, -25, 0.3) +
+      `<path d="M52 56 Q22 68 30 120 Q46 126 58 94 Z" fill="#2B2433"/><path d="M144 56 Q174 68 166 120 Q150 126 138 94 Z" fill="#2B2433"/>` +
+      `<ellipse cx="98" cy="110" rx="30" ry="22" fill="url(#zm)"/>` +
+      `<circle cx="78" cy="64" r="6" fill="#E5B98A"/><circle cx="118" cy="64" r="6" fill="#E5B98A"/>` +
+      eye(78, 82, 11, 13, 7.5) + eye(118, 82, 11, 13, 7.5) +
+      `<ellipse cx="98" cy="100" rx="11" ry="8" fill="#1E1A24"/><ellipse cx="94" cy="97" rx="4" ry="2" fill="#fff" opacity=".6"/>` +
+      `<path d="M98 108 v5 M98 113 q-8 6 -14 0 M98 113 q8 6 14 0" stroke="#3A2F2A" stroke-width="3" fill="none" stroke-linecap="round"/>` +
+      `<path d="M92 117 Q98 134 104 117 Z" fill="#FF7B8A"/>` +
+      `<path d="M60 128 Q98 146 136 128" stroke="#E53935" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="98" cy="142" r="7" fill="#FFD23F"/>` },
+
+    koshka: { w: 200, h: 214, svg:
+      `<defs>${rg('kc', [[0, '#FFD29A'], [0.6, '#F7A04A'], [1, '#D9772A']])}${CK}</defs>` +
+      `<path d="M146 190 Q196 186 184 140 Q178 118 162 124" stroke="#E98A36" stroke-width="14" fill="none" stroke-linecap="round"/>` +
+      `<ellipse cx="100" cy="168" rx="48" ry="40" fill="url(#kc)"/><ellipse cx="100" cy="176" rx="28" ry="26" fill="#FFF3E2"/>` +
+      `<ellipse cx="78" cy="204" rx="16" ry="8" fill="#FFF3E2"/><ellipse cx="122" cy="204" rx="16" ry="8" fill="#FFF3E2"/>` +
+      `<path d="M48 84 L52 24 L94 56 Z" fill="#F29A44"/><path d="M58 72 L61 40 L82 58 Z" fill="#FFB7C5"/>` +
+      `<path d="M152 84 L148 24 L106 56 Z" fill="#F29A44"/><path d="M142 72 L139 40 L118 58 Z" fill="#FFB7C5"/>` +
+      `<ellipse cx="100" cy="100" rx="56" ry="48" fill="url(#kc)"/>` + shine(80, 70, 16, 9) +
+      `<path d="M100 56 V70 M86 58 L90 70 M114 58 L110 70" stroke="#D9772A" stroke-width="5" stroke-linecap="round"/>` +
+      `<ellipse cx="100" cy="124" rx="24" ry="16" fill="#FFF3E2"/>` +
+      eye(78, 100, 12, 14, 8) + eye(122, 100, 12, 14, 8) + cheek(64, 122) + cheek(136, 122) +
+      `<path d="M93 114 L107 114 L100 122 Z" fill="#FF7D9C"/>` +
+      `<path d="M100 122 v4 M100 126 q-6 5 -11 1 M100 126 q6 5 11 1" stroke="#7A4A2A" stroke-width="2.5" fill="none" stroke-linecap="round"/>` +
+      `<path d="M78 122 L50 116 M78 128 L50 132 M122 122 L150 116 M122 128 L150 132" stroke="#B9875A" stroke-width="1.8" stroke-linecap="round"/>` },
+
+    carrot: { w: 80, h: 170, svg:
+      `<defs>${lg('crt', [[0, '#FFB45C'], [1, '#EE6A16']], 1, 0)}</defs>` +
+      `<path d="M40 42 Q22 18 12 2 Q34 12 42 30 Q44 8 52 0 Q56 18 46 36 Q62 20 78 16 Q66 32 44 46 Z" fill="#4FAE4A"/>` +
+      `<path d="M16 48 Q40 36 64 48 Q62 102 44 166 Q40 172 36 166 Q18 102 16 48 Z" fill="url(#crt)"/>` +
+      `<path d="M22 72 L34 74 M48 94 L58 92 M28 116 L38 118 M46 136 L53 134" stroke="#C85A12" stroke-width="3" stroke-linecap="round" opacity=".6"/>` +
+      shine(28, 72, 5, 16, 5, 0.45) },
+
+    duck: { w: 186, h: 172, svg:
+      `<defs>${rg('dk', [[0, '#FFF6B0'], [0.6, '#FFD93D'], [1, '#F2B200']])}${CK}</defs>` +
+      `<ellipse cx="74" cy="164" rx="16" ry="6" fill="#FF8A1F"/><ellipse cx="110" cy="164" rx="16" ry="6" fill="#FF8A1F"/>` +
+      `<path d="M38 110 L14 90 L42 100 Z" fill="#F2B200"/>` +
+      `<ellipse cx="92" cy="118" rx="58" ry="44" fill="url(#dk)"/>` +
+      `<path d="M58 112 Q90 94 112 116 Q96 142 62 128 Z" fill="#F7C51E"/>` +
+      `<circle cx="122" cy="66" r="40" fill="url(#dk)"/>` +
+      `<path d="M118 28 Q112 10 124 6 Q120 20 130 26 Z" fill="#F2B200"/>` + shine(110, 46, 12, 7) +
+      eye(134, 62, 9, 11, 6.5) + cheek(124, 86, 'ck', 9, 6) +
+      `<path d="M152 72 Q182 70 180 82 Q168 94 148 86 Z" fill="#FF8A1F"/><path d="M150 80 Q166 82 180 80" stroke="#D9620A" stroke-width="2" fill="none"/>` },
     finger: { w: 120, h: 140, svg:
       `<path d="M44 66 L44 18 Q44 4 56 4 Q68 4 68 18 L68 58 Q72 50 82 52 Q92 54 92 64 Q98 58 106 62 Q114 66 112 78 L110 104 Q106 132 78 136 L60 136 Q38 134 28 112 L14 84 Q8 72 18 68 Q28 64 36 76 L44 88 Z" fill="#FFE3C7" stroke="#2B2140" stroke-width="5" stroke-linejoin="round"/>` +
       `<path d="M68 60 L68 80 M92 64 L92 82" stroke="#2B2140" stroke-width="4" stroke-linecap="round"/>` }
@@ -248,6 +353,10 @@
 
   // Волк без праздничного колпака — для «Теремка»
   { const s = ART.wolf.svg, i = s.lastIndexOf('<g transform="rotate(14 112 40)">'); ART.wolf_plain = { w: ART.wolf.w, h: ART.wolf.h, svg: s.slice(0, i) }; }
+  // Мама-утка — белая, с бантиком; для «Репки»
+  { const sw = { '#FFF6B0': '#FFFFFF', '#FFD93D': '#F1F3F8', '#F2B200': '#C9CEDB', '#F7C51E': '#E1E5EE' };
+    ART.duck_mama = { w: ART.duck.w, h: ART.duck.h, svg: ART.duck.svg.replace(/#(FFF6B0|FFD93D|F2B200|F7C51E)/g, m => sw[m]) +
+      '<path d="M102 34 L86 22 L88 46 Z M106 34 L122 20 L122 46 Z" fill="#FF6F9F"/><circle cx="104" cy="34" r="6" fill="#E5487E"/>' }; }
 
   const cache = {};
   const art = G.art = {

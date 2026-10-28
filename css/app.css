@@ -103,6 +103,9 @@ img { -webkit-user-drag: none; user-select: none; }
 .screen.world.w-forest { background: linear-gradient(180deg, #8FD3FF 0%, #CFF0FF 26%, #A9E08E 27%, #6CC35E 100%); }
 .screen.world.w-meadow { background: radial-gradient(60% 18% at 20% 70%, rgba(255,255,255,.25), transparent), linear-gradient(180deg, #86CFF7 0%, #D6F0FF 24%, #B9E89A 25%, #7CCB5E 100%); }
 .world-done.w-meadow { background: radial-gradient(100% 60% at 50% 20%, #FFFDF0, #FFE2B8 60%, #FFB97A); }
+.screen.world.w-garden { background: linear-gradient(180deg, #8CD0F8 0%, #DDF2FF 24%, rgba(221,242,255,0) 24.1%),
+  repeating-linear-gradient(170deg, rgba(140,90,50,0) 0 34px, rgba(140,90,50,.1) 34px 44px), linear-gradient(180deg, #C9E58A 0%, #9CCB5A 100%); }
+.world-done.w-garden { background: radial-gradient(100% 60% at 50% 20%, #FFFFF0, #F2F2B0 60%, #C9DD6A); }
 .world .bar h2 { color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,.18); }
 .path-field { position: absolute; left: 0; right: 0; top: calc(var(--sat) + 76px); bottom: calc(var(--sab) + 8px); }
 .path-line { position: absolute; inset: 0; pointer-events: none; }
