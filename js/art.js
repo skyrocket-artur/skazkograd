@@ -384,6 +384,26 @@
       [[30, 42], [50, 40], [70, 42], [22, 60], [41, 60], [60, 60], [78, 60], [30, 78], [50, 78], [70, 78], [40, 95], [60, 95], [50, 106]]
         .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" fill="url(#ml)"/><circle cx="${x - 4}" cy="${y - 4}" r="3" fill="#fff" opacity=".55"/>`).join('') +
       `<path d="M50 30 L32 16 L44 26 L40 6 L52 22 L64 6 L60 26 L72 16 L56 32 Z" fill="#4FAE4A"/>` },
+    // ---------- мир 5: Золотая рыбка ----------
+    fish: { w: 150, h: 100, svg:
+      `<defs>${rg('fsh', [[0, '#9FE3FF'], [0.6, '#3BA7E8'], [1, '#1E6FB8']])}${CK}</defs>` +
+      `<path d="M110 50 L146 20 Q136 50 146 80 Z" fill="#2E8BD6"/>` +
+      `<path d="M46 20 Q70 -2 94 20 Z" fill="#2E8BD6"/>` +
+      `<ellipse cx="66" cy="50" rx="56" ry="36" fill="url(#fsh)"/><ellipse cx="62" cy="66" rx="38" ry="14" fill="#fff" opacity=".3"/>` +
+      `<path d="M84 22 Q93 50 84 78" stroke="#fff" stroke-width="4" fill="none" opacity=".5"/>` +
+      `<path d="M70 56 Q90 50 94 68 Q78 72 70 56 Z" fill="#7CCBF5"/>` +
+      eye(36, 42, 10, 11, 7) + cheek(32, 62, 'ck', 8, 5) +
+      `<path d="M12 56 Q18 61 23 56" stroke="#1E4F80" stroke-width="3" fill="none" stroke-linecap="round"/>` },
+    shell: { w: 120, h: 112, svg:
+      `<defs>${rg('shl', [[0, '#FFF4EA'], [0.6, '#FFBFA6'], [1, '#E8806A']], '50%', '75%', '85%')}</defs>` +
+      `<path d="M60 104 L8 50 Q12 6 60 4 Q108 6 112 50 Z" fill="url(#shl)"/>` +
+      `<g stroke="#E07A62" stroke-width="3" opacity=".55" fill="none"><path d="M60 100 L20 34 M60 100 L38 14 M60 100 L60 8 M60 100 L82 14 M60 100 L100 34"/></g>` +
+      `<path d="M42 96 L78 96 L72 110 L48 110 Z" fill="#F29C86"/>` },
+    boat: { w: 240, h: 100, svg:
+      `<defs>${lg('bt', [[0, '#D08C52'], [1, '#7A4A22']])}</defs>` +
+      `<path d="M4 30 L236 30 Q222 92 152 96 L88 96 Q18 92 4 30 Z" fill="url(#bt)"/>` +
+      `<path d="M6 30 L234 30" stroke="#EDBB82" stroke-width="9" stroke-linecap="round"/>` +
+      `<path d="M28 56 Q120 72 212 56" stroke="#5E3618" stroke-width="3" fill="none" opacity=".45"/><path d="M50 78 Q120 88 190 78" stroke="#5E3618" stroke-width="3" fill="none" opacity=".35"/>` },
     finger: { w: 120, h: 140, svg:
       `<path d="M44 66 L44 18 Q44 4 56 4 Q68 4 68 18 L68 58 Q72 50 82 52 Q92 54 92 64 Q98 58 106 62 Q114 66 112 78 L110 104 Q106 132 78 136 L60 136 Q38 134 28 112 L14 84 Q8 72 18 68 Q28 64 36 76 L44 88 Z" fill="#FFE3C7" stroke="#2B2140" stroke-width="5" stroke-linejoin="round"/>` +
       `<path d="M68 60 L68 80 M92 64 L92 82" stroke="#2B2140" stroke-width="4" stroke-linecap="round"/>` }
@@ -406,6 +426,13 @@
     '<path d="M56 160 Q100 180 144 160" stroke="#FFD23F" stroke-width="3" fill="none" stroke-dasharray="6 6"/>');
   ART.masha = recolor('vnuchka', { '#FFB3CC': '#8DB2F5', '#FF6F9F': '#4A78D0', '#D9437A': '#2F55A8', '#FFE7A0': '#C48A5A', '#F6C24E': '#8A5530',
     '#D99A2A': '#5E3A1E', '#E2AA3A': '#7A4A2A', '#C98A22': '#5E3A1E', '#4C8DF0': '#E53950', '#2F6FE0': '#B31E3A' });
+  // Рыбки разных цветов
+  ART.fish_o = recolor('fish', { '#9FE3FF': '#FFE0A0', '#3BA7E8': '#FF9F38', '#1E6FB8': '#D9681A', '#2E8BD6': '#F08A2A', '#7CCBF5': '#FFC27A', '#1E4F80': '#8A3E10' });
+  ART.fish_g = recolor('fish', { '#9FE3FF': '#C8F5A8', '#3BA7E8': '#5CC85A', '#1E6FB8': '#2E8A3A', '#2E8BD6': '#44A848', '#7CCBF5': '#9EE08A', '#1E4F80': '#1E5A28' });
+  ART.rybka = recolor('fish', { '#9FE3FF': '#FFF6C0', '#3BA7E8': '#FFC93C', '#1E6FB8': '#E08E00', '#2E8BD6': '#F5AE00', '#7CCBF5': '#FFE27A', '#1E4F80': '#9A5A00' },
+    '<path d="M24 24 L26 2 L35 14 L44 -1 L53 14 L62 2 L64 24 Z" fill="#FFD23F" stroke="#E08E00" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<circle cx="44" cy="17" r="3.5" fill="#E8433A"/><circle cx="33" cy="19" r="2.5" fill="#4A78D0"/><circle cx="55" cy="19" r="2.5" fill="#4A78D0"/>');
+  ART.fish_p = recolor('fish', { '#9FE3FF': '#FFD0EA', '#3BA7E8': '#F27DB8', '#1E6FB8': '#B8418A', '#2E8BD6': '#E066A6', '#7CCBF5': '#FFB0D8', '#1E4F80': '#7A1E58' });
 
   const cache = {};
   const art = G.art = {

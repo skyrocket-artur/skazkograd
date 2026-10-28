@@ -57,7 +57,8 @@
       music: 'garden', friends: ['ded', 'babka', 'repka', 'vnuchka', 'mouse'], deco: ['tree_round', 'bush', 'tree_fir', 'bush'] },
     { id: 'w4', title: 'Три медведя', learn: 'цифры 8–9 · буквы И, Ы · размеры', art: 'bear', open: true, cls: 'w-bears', task: 'w4_task', done: 'w4_done', intro: 'w4_intro',
       music: 'bears', friends: ['bear', 'bear_mama', 'masha', 'mishutka', 'cup'], deco: ['tree_fir', 'tree_fir', 'tree_round', 'bush'] },
-    { id: 'w5', title: 'Золотая рыбка', learn: 'цифра 10 · сложение', art: 'rybka', cls: 'w-sea' }
+    { id: 'w5', title: 'Золотая рыбка', learn: 'цифра 10 · сложение', art: 'rybka', open: true, final: true, cls: 'w-sea', task: 'w5_task', done: 'w5_done', intro: 'w5_intro',
+      music: 'sea', friends: ['kolobok', 'teremok', 'repka', 'bear', 'rybka'], deco: ['fish_o', 'shell', 'fish_g', 'fish_p'] }
   ];
   const levelsOf = w => G.LEVELS.filter(l => l.world === w.id).sort((a, b) => a.n - b.n);
   // «Сейчас открыты сказки …» — для экрана родителей
@@ -213,7 +214,8 @@
       h('div', { class: 'confetti' }),
       h('div', { class: 'gramota pop-in' },
         h('div', { class: 'stars big' }, h('i', { html: G.ICON.star }), h('i', { html: G.ICON.star }), h('i', { html: G.ICON.star })),
-        h('h2', null, `Сказка «${w.title}» пройдена!`),
+        h('h2', null, w.final ? 'Все сказки пройдены!' : `Сказка «${w.title}» пройдена!`),
+        w.final ? h('p', { class: 'gr-name' }, 'Грамота знатока Сказкограда') : null,
         name ? h('p', { class: 'gr-name' }, `Молодец, ${name}!`) : null,
         h('div', { class: 'gr-friends' }, ...(w.friends || ['hare', 'wolf', 'kolobok', 'bear', 'fox']).map(n => G.art.img(n)))),
       rest,

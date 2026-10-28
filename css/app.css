@@ -107,6 +107,8 @@ img { -webkit-user-drag: none; user-select: none; }
   repeating-linear-gradient(170deg, rgba(140,90,50,0) 0 34px, rgba(140,90,50,.1) 34px 44px), linear-gradient(180deg, #C9E58A 0%, #9CCB5A 100%); }
 .screen.world.w-bears { background: linear-gradient(180deg, #7FC2EE 0%, #CDEBFF 24%, #9FD37E 25%, #4F9E46 100%); }
 .world-done.w-bears { background: radial-gradient(100% 60% at 50% 20%, #FFF8EC, #F2D2A8 60%, #D69A62); }
+.screen.world.w-sea { background: linear-gradient(180deg, #86CFF7 0%, #DDF2FF 22%, #74D3F2 23%, #2F8FD0 80%, #F4DFA4 81%, #D8B46C 100%); }
+.world-done.w-sea { background: radial-gradient(100% 60% at 50% 20%, #FFFDF0, #FFE9A0 55%, #8CD3F5); }
 .world-done.w-garden { background: radial-gradient(100% 60% at 50% 20%, #FFFFF0, #F2F2B0 60%, #C9DD6A); }
 .world .bar h2 { color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,.18); }
 .path-field { position: absolute; left: 0; right: 0; top: calc(var(--sat) + 76px); bottom: calc(var(--sab) + 8px); }
