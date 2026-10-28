@@ -1,0 +1,5 @@
+audio/src/
+audio/samples/
+.DS_Store
+.playwright-mcp/
+GAME_PLAN.md
