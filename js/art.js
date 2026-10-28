@@ -346,6 +346,44 @@
       `<path d="M118 28 Q112 10 124 6 Q120 20 130 26 Z" fill="#F2B200"/>` + shine(110, 46, 12, 7) +
       eye(134, 62, 9, 11, 6.5) + cheek(124, 86, 'ck', 9, 6) +
       `<path d="M152 72 Q182 70 180 82 Q168 94 148 86 Z" fill="#FF8A1F"/><path d="M150 80 Q166 82 180 80" stroke="#D9620A" stroke-width="2" fill="none"/>` },
+    // ---------- мир 4: Три медведя ----------
+    bowl: { w: 160, h: 96, svg:
+      `<defs>${lg('bwl', [[0, '#8DB8FF'], [1, '#2F64C9']])}</defs>` +
+      `<path d="M104 34 L142 6" stroke="#C99A62" stroke-width="8" stroke-linecap="round"/>` +
+      `<ellipse cx="80" cy="36" rx="72" ry="18" fill="#F7DFA8"/><ellipse cx="66" cy="32" rx="22" ry="6" fill="#FFF3D0"/>` +
+      `<ellipse cx="100" cy="36" rx="14" ry="6" fill="#C99A62"/>` +
+      `<path d="M6 36 Q12 92 80 94 Q148 92 154 36 Q80 60 6 36 Z" fill="url(#bwl)"/>` +
+      `<ellipse cx="80" cy="36" rx="73" ry="18" fill="none" stroke="#A9C9FF" stroke-width="5"/>` +
+      `<path d="M22 54 Q80 74 138 54" stroke="#fff" stroke-width="4" fill="none" opacity=".55"/>` +
+      `<g fill="#fff" opacity=".9"><circle cx="48" cy="72" r="4"/><circle cx="80" cy="78" r="4.5"/><circle cx="112" cy="72" r="4"/></g>` },
+    chair: { w: 120, h: 164, svg:
+      `<defs>${lg('chr', [[0, '#E8AE6E'], [1, '#A8662E']])}</defs>` +
+      `<rect x="20" y="98" width="13" height="64" rx="5" fill="#8E5426"/><rect x="87" y="98" width="13" height="64" rx="5" fill="#8E5426"/>` +
+      `<rect x="20" y="8" width="13" height="96" rx="5" fill="url(#chr)"/><rect x="87" y="8" width="13" height="96" rx="5" fill="url(#chr)"/>` +
+      `<path d="M26 16 Q60 0 94 16 L94 62 Q60 52 26 62 Z" fill="url(#chr)"/>` +
+      `<path d="M60 50 C48 40 40 32 48 25 C54 20 60 26 60 29 C60 26 66 20 72 25 C80 32 72 40 60 50 Z" fill="#E8433A"/>` +
+      `<path d="M10 94 L110 94 L104 112 L16 112 Z" fill="#B87437"/><rect x="8" y="86" width="104" height="12" rx="5" fill="#E8AE6E"/>` },
+    bed: { w: 200, h: 136, svg:
+      `<defs>${lg('bdw', [[0, '#E8AE6E'], [1, '#A8662E']])}</defs>` +
+      `<rect x="14" y="116" width="10" height="16" rx="3" fill="#7A4A1E"/><rect x="178" y="116" width="10" height="16" rx="3" fill="#7A4A1E"/>` +
+      `<path d="M8 124 L8 34 Q8 10 30 10 Q52 10 52 34 L52 124 Z" fill="url(#bdw)"/><circle cx="30" cy="40" r="9" fill="#E8433A"/>` +
+      `<path d="M166 124 L166 64 Q166 48 180 48 Q194 48 194 64 L194 124 Z" fill="url(#bdw)"/>` +
+      `<rect x="22" y="84" width="166" height="26" rx="8" fill="#A8662E"/>` +
+      `<ellipse cx="66" cy="70" rx="26" ry="15" fill="#fff"/><ellipse cx="62" cy="66" rx="12" ry="5" fill="#EEF2FA"/>` +
+      `<path d="M78 62 Q130 52 178 62 L178 98 Q130 108 78 98 Z" fill="#E8433A"/>` +
+      `<g fill="#FFD23F"><circle cx="100" cy="72" r="4"/><circle cx="128" cy="68" r="4"/><circle cx="156" cy="72" r="4"/><circle cx="112" cy="88" r="4"/><circle cx="142" cy="86" r="4"/></g>` },
+    cup: { w: 124, h: 100, svg:
+      `<defs>${lg('cpb', [[0, '#FF9A8A'], [1, '#D7342C']])}</defs>` +
+      `<ellipse cx="60" cy="88" rx="56" ry="11" fill="#DCE4F2"/><ellipse cx="60" cy="86" rx="42" ry="7" fill="#fff"/>` +
+      `<path d="M94 40 Q118 38 114 58 Q110 72 92 68" stroke="#D7342C" stroke-width="8" fill="none" stroke-linecap="round"/>` +
+      `<path d="M20 30 L100 30 Q98 82 60 84 Q22 82 20 30 Z" fill="url(#cpb)"/>` +
+      `<ellipse cx="60" cy="30" rx="40" ry="9" fill="#B5652A" stroke="#fff" stroke-width="4"/>` +
+      `<g fill="#fff" opacity=".9"><circle cx="40" cy="52" r="5"/><circle cx="62" cy="62" r="5"/><circle cx="82" cy="50" r="5"/></g>` },
+    malina: { w: 100, h: 120, svg:
+      `<defs>${rg('ml', [[0, '#FF9DB4'], [0.55, '#E8285A'], [1, '#A81040']])}</defs>` +
+      [[30, 42], [50, 40], [70, 42], [22, 60], [41, 60], [60, 60], [78, 60], [30, 78], [50, 78], [70, 78], [40, 95], [60, 95], [50, 106]]
+        .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" fill="url(#ml)"/><circle cx="${x - 4}" cy="${y - 4}" r="3" fill="#fff" opacity=".55"/>`).join('') +
+      `<path d="M50 30 L32 16 L44 26 L40 6 L52 22 L64 6 L60 26 L72 16 L56 32 Z" fill="#4FAE4A"/>` },
     finger: { w: 120, h: 140, svg:
       `<path d="M44 66 L44 18 Q44 4 56 4 Q68 4 68 18 L68 58 Q72 50 82 52 Q92 54 92 64 Q98 58 106 62 Q114 66 112 78 L110 104 Q106 132 78 136 L60 136 Q38 134 28 112 L14 84 Q8 72 18 68 Q28 64 36 76 L44 88 Z" fill="#FFE3C7" stroke="#2B2140" stroke-width="5" stroke-linejoin="round"/>` +
       `<path d="M68 60 L68 80 M92 64 L92 82" stroke="#2B2140" stroke-width="4" stroke-linecap="round"/>` }
@@ -357,6 +395,17 @@
   { const sw = { '#FFF6B0': '#FFFFFF', '#FFD93D': '#F1F3F8', '#F2B200': '#C9CEDB', '#F7C51E': '#E1E5EE' };
     ART.duck_mama = { w: ART.duck.w, h: ART.duck.h, svg: ART.duck.svg.replace(/#(FFF6B0|FFD93D|F2B200|F7C51E)/g, m => sw[m]) +
       '<path d="M102 34 L86 22 L88 46 Z M106 34 L122 20 L122 46 Z" fill="#FF6F9F"/><circle cx="104" cy="34" r="6" fill="#E5487E"/>' }; }
+
+  // Медведица, Мишутка и Маша — перекраска готовых рисунков плюс детали
+  const recolor = (src, map, extra = '') => ({ w: ART[src].w, h: ART[src].h, svg: ART[src].svg.replace(/#[0-9A-F]{6}/g, m => map[m] || m) + extra });
+  ART.bear_mama = recolor('bear', { '#D9A273': '#E6B68A', '#A5683E': '#B97B4E', '#7A4A2A': '#8C5A36' },
+    '<path d="M68 170 Q100 162 132 170 L138 214 Q100 224 62 214 Z" fill="#FFF3F7"/><path d="M64 214 Q100 224 136 214" stroke="#FF9FC2" stroke-width="5" fill="none" stroke-dasharray="1 7" stroke-linecap="round"/>' +
+    '<path d="M68 42 L50 28 L52 58 Z M76 42 L94 28 L92 58 Z" fill="#FF6F9F"/><circle cx="72" cy="43" r="7" fill="#E5487E"/>');
+  ART.mishutka = recolor('bear', { '#D9A273': '#EEC79A', '#A5683E': '#CC9160', '#7A4A2A': '#9E6A42', '#8A5634': '#A87650' },
+    '<path d="M48 150 Q100 176 152 150 L150 166 Q100 190 50 166 Z" fill="#E53935"/><path d="M120 170 L136 204 L120 202 L110 174 Z" fill="#C62828"/>' +
+    '<path d="M56 160 Q100 180 144 160" stroke="#FFD23F" stroke-width="3" fill="none" stroke-dasharray="6 6"/>');
+  ART.masha = recolor('vnuchka', { '#FFB3CC': '#8DB2F5', '#FF6F9F': '#4A78D0', '#D9437A': '#2F55A8', '#FFE7A0': '#C48A5A', '#F6C24E': '#8A5530',
+    '#D99A2A': '#5E3A1E', '#E2AA3A': '#7A4A2A', '#C98A22': '#5E3A1E', '#4C8DF0': '#E53950', '#2F6FE0': '#B31E3A' });
 
   const cache = {};
   const art = G.art = {

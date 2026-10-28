@@ -55,7 +55,8 @@
       music: 'meadow', friends: ['mouse', 'frog', 'teremok', 'hare', 'fox'], deco: ['tree_round', 'bush', 'tree_round', 'bush'] },
     { id: 'w3', title: 'Репка', learn: 'цифры 6–7 · буква У · порядок', art: 'repka', open: true, cls: 'w-garden', task: 'w3_task', done: 'w3_done', intro: 'w3_intro',
       music: 'garden', friends: ['ded', 'babka', 'repka', 'vnuchka', 'mouse'], deco: ['tree_round', 'bush', 'tree_fir', 'bush'] },
-    { id: 'w4', title: 'Три медведя', learn: 'цифры 8–9 · буквы И, Ы · размеры', art: 'bear', cls: 'w-bears' },
+    { id: 'w4', title: 'Три медведя', learn: 'цифры 8–9 · буквы И, Ы · размеры', art: 'bear', open: true, cls: 'w-bears', task: 'w4_task', done: 'w4_done', intro: 'w4_intro',
+      music: 'bears', friends: ['bear', 'bear_mama', 'masha', 'mishutka', 'cup'], deco: ['tree_fir', 'tree_fir', 'tree_round', 'bush'] },
     { id: 'w5', title: 'Золотая рыбка', learn: 'цифра 10 · сложение', art: 'rybka', cls: 'w-sea' }
   ];
   const levelsOf = w => G.LEVELS.filter(l => l.world === w.id).sort((a, b) => a.n - b.n);

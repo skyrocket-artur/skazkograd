@@ -170,7 +170,9 @@
     meadow: { bpm: 112, lead: [79, null, 76, null, 74, 76, 79, null, 81, null, 79, 76, 74, null, null, null, 76, null, 74, null, 72, 74, 76, null, 74, 72, 71, null, 67, null, null, null],
       bass: [43, null, null, null, 50, null, null, null, 48, null, null, null, 50, null, null, null, 52, null, null, null, 48, null, null, null, 50, null, null, null, 43, null, 50, null] },
     garden: { bpm: 120, lead: [67, null, 67, 69, 71, null, 67, null, 72, null, 71, 69, 67, null, null, null, 69, null, 69, 71, 72, null, 69, null, 71, 69, 67, 66, 67, null, null, null],
-      bass: [43, null, 50, null, 43, null, 50, null, 48, null, 55, null, 43, null, 50, null, 45, null, 52, null, 48, null, 55, null, 50, null, 54, null, 43, null, 50, null] }
+      bass: [43, null, 50, null, 43, null, 50, null, 48, null, 55, null, 43, null, 50, null, 45, null, 52, null, 48, null, 55, null, 50, null, 54, null, 43, null, 50, null] },
+    bears: { bpm: 100, lead: [62, null, 65, null, 69, null, 67, 65, 64, null, 62, null, 64, null, null, null, 65, null, 69, null, 72, null, 70, 69, 67, null, 65, 64, 62, null, null, null],
+      bass: [38, null, null, null, 45, null, null, null, 43, null, null, null, 45, null, null, null, 41, null, null, null, 38, null, null, null, 43, null, null, null, 45, null, 38, null] }
   };
   // want — какая музыка должна играть на этом экране; если музыка выключена, планировщик не крутится вовсе
   const M = G.music = {
