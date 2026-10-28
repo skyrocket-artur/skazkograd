@@ -260,7 +260,25 @@
       h('span', null, 'Стереть весь прогресс?'),
       h('button', { class: 'btn small danger', onclick: () => { G.store.reset(); ui.map(); } }, 'Да'),
       h('button', { class: 'btn small ghost', onclick: () => { confirmRow.hidden = true; } }, 'Нет'));
-    const voiceInfo = G.VOICE_PACKS && G.VOICE_PACKS.w1 ? 'Озвучка: записанный голос.' : 'Озвучка пока голосом браузера — записанный голос будет в следующей версии.';
+    const voiceInfo = G.VOICE_PACKS && G.VOICE_PACKS.w1 ? 'Озвучка: голос «Марина».' : 'Озвучка пока голосом браузера.';
+    // Проверка звука: видно, загрузилась ли запись и что звучит на этом телефоне
+    const sndStatus = h('p', { class: 'muted snd-status' });
+    const paintStatus = () => {
+      const V = G.voice, pk = V.packs.c || {}, ctx = G.audio.ctx;
+      const rows = [
+        V.has('c_good1') ? '✓ Запись голоса загружена' : pk.failed ? '✗ Запись голоса не загрузилась (' + (pk.err || 'сеть') + ')' : '… Запись голоса загружается',
+        ctx && ctx.state === 'running' ? '✓ Звук включён' : '… Звук ещё не включён — нажмите «Проверить голос»',
+        V.mode === 'pack' ? '✓ Сейчас звучит Марина' : V.mode === 'tts' ? '✗ Сейчас звучит голос браузера' : ''
+      ].filter(Boolean);
+      sndStatus.innerHTML = rows.join('<br>');
+    };
+    const testBtn = h('button', { class: 'btn ghost small' }, 'Проверить голос');
+    testBtn.addEventListener('click', () => {
+      if (s.mute) { s.mute = false; save(); G.audio.apply(); }
+      G.voice.loadPack('c').then(() => G.voice.say('c_good1')).then(paintStatus);
+      setTimeout(paintStatus, 1700);
+    });
+    paintStatus();
     const el = h('div', { class: 'screen parents' },
       h('header', { class: 'bar' }, h('button', { class: 'icon-btn', 'aria-label': 'Назад', html: G.ICON.back, onclick: () => ui.map() }), h('h2', null, 'Для родителей'), h('div', { class: 'tb-space' })),
       h('div', { class: 'p-body' },
@@ -275,6 +293,9 @@
           tog('music', 'Музыка'), tog('sfx', 'Звуки'), tog('voice', 'Голос'), tog('tts', 'Голос браузера, если нет записи'),
           tog('rests', 'Предлагать отдых после сказки'), tog('unlockAll', 'Открыть все уровни'),
           h('p', { class: 'muted' }, voiceInfo)),
+        h('section', { class: 'p-card' },
+          h('h3', null, 'Проверка звука'), sndStatus, testBtn,
+          h('p', { class: 'muted' }, 'На iPhone без звука? Проверьте переключатель беззвучного режима сбоку и громкость.')),
         h('section', { class: 'p-card' },
           h('button', { class: 'btn ghost share-btn', html: G.ICON.share + '<span>Поделиться игрой</span>', onclick: () => G.share() }),
           h('button', { class: 'btn ghost', onclick: () => { confirmRow.hidden = false; } }, 'Сбросить прогресс'), confirmRow)));

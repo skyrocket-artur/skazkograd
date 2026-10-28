@@ -4,7 +4,7 @@
 (function () {
   const S = () => G.store.s;
   const A = G.audio = {
-    ctx: null, master: null, sfxBus: null, musicBus: null, voiceBus: null, unlocked: false,
+    ctx: null, master: null, sfxBus: null, musicBus: null, voiceBus: null, gestured: false,
 
     // Контекст можно создать заранее (для декодирования озвучки), запустится он по первому касанию.
     ensure() {
@@ -19,15 +19,30 @@
       this.apply();
       return c;
     },
-    // Вызывается на КАЖДОЕ касание: будит контекст после блокировки экрана / звонка.
-    wake() {
-      if (!this.ensure()) return;
-      if (this.ctx.state !== 'running') { try { this.ctx.resume(); } catch (e) { /* ok */ } }
-      if (!this.unlocked) {
-        this.unlocked = true;
-        try { const b = this.ctx.createBuffer(1, 1, 22050), s = this.ctx.createBufferSource(); s.buffer = b; s.connect(this.ctx.destination); s.start(0); } catch (e) { /* ok */ }
-        V.unlockTTS();
+    // Будит звук. Телефоны разрешают включить звук только по «настоящему» нажатию — когда палец
+    // отпущен (touchend / click), а не в момент касания. Поэтому будим на всех событиях и пока
+    // контекст не заработал — повторяем каждый раз.
+    wake(gesture) {
+      const c = this.ensure(); if (!c) return;
+      if (c.state !== 'running') {
+        try { const p = c.resume(); if (p && p.catch) p.catch(() => {}); } catch (e) { /* ok */ }
+        try { const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource(); s.buffer = b; s.connect(c.destination); s.start(0); } catch (e) { /* ok */ }
       }
+      if (gesture && !this.gestured) {
+        this.gestured = true; unmuteIOS();
+        if (!Object.keys(G.VOICE_PACKS || {}).length) V.unlockTTS(); // голос браузера нужен, только если записей нет
+      }
+    },
+    // Подождать, пока звук заработает (не дольше ms). true — работает.
+    runWait(ms) {
+      if (this.ok) return Promise.resolve(true);
+      if (!this.ctx) return Promise.resolve(false);
+      try { const p = this.ctx.resume(); if (p && p.catch) p.catch(() => {}); } catch (e) { /* ok */ }
+      return new Promise(res => {
+        const t0 = performance.now();
+        const chk = () => { if (this.ok) res(true); else if (performance.now() - t0 > ms) res(false); else setTimeout(chk, 40); };
+        chk();
+      });
     },
     // Применить настройки: «весь звук выкл» глушит всё сразу, музыка выключается отдельно
     apply() {
@@ -57,7 +72,29 @@
     else { try { A.ctx.resume(); } catch (e) { /* ok */ } }
   });
   window.addEventListener('pageshow', () => { if (A.ctx) try { A.ctx.resume(); } catch (e) { /* ok */ } });
-  window.addEventListener('pointerdown', () => A.wake(), { capture: true, passive: true });
+  window.addEventListener('pointerdown', () => A.wake(false), { capture: true, passive: true });
+  ['pointerup', 'touchend', 'click', 'keydown'].forEach(ev => window.addEventListener(ev, () => A.wake(true), { capture: true, passive: true }));
+
+  // iPhone с выключенным звонком (переключатель сбоку) глушит Web Audio, но не обычный <audio>.
+  // Тихий зацикленный <audio> переводит страницу в режим «плеер», и голос с музыкой становятся слышны.
+  // На iOS 17+ то же делает navigator.audioSession — тогда трюк не нужен.
+  let unmuteEl = null;
+  function unmuteIOS() {
+    const iOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (!iOS || unmuteEl || navigator.audioSession) return;
+    const rate = 8000, n = 4000, buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+    const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    w(0, 'RIFF'); v.setUint32(4, 36 + n, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
+    v.setUint16(22, 1, true); v.setUint32(24, rate, true); v.setUint32(28, rate, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true);
+    w(36, 'data'); v.setUint32(40, n, true); for (let i = 0; i < n; i++) v.setUint8(44 + i, 128);
+    unmuteEl = document.createElement('audio');
+    unmuteEl.setAttribute('x-webkit-airplay', 'deny'); unmuteEl.setAttribute('playsinline', '');
+    unmuteEl.loop = true; unmuteEl.src = URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+    try { const p = unmuteEl.play(); if (p && p.catch) p.catch(() => {}); } catch (e) { /* ok */ }
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) unmuteEl.pause(); else { const p = unmuteEl.play(); if (p && p.catch) p.catch(() => {}); }
+    });
+  }
 
   // ---------- синтез ----------
   function tone({ f = 440, type = 'sine', t = 0, dur = 0.2, vol = 0.25, attack = 0.005, slide = 0, dest }) {
@@ -186,7 +223,7 @@
           } else ab = await r.arrayBuffer();
           const buf = await new Promise((res, rej) => { const pr = A.ctx.decodeAudioData(ab, res, rej); if (pr && pr.then) pr.then(res, rej); });
           this.packs[name] = { buf };
-        } catch (e) { console.warn('Озвучка не загрузилась, будет голос браузера', name, e); this.packs[name] = { failed: true }; }
+        } catch (e) { console.warn('Озвучка не загрузилась, будет голос браузера', name, e); this.packs[name] = { failed: true, err: String(e && e.message || e) }; }
         finally { clearTimeout(to); onProgress && onProgress(1); }
       })();
       this.packs[name] = { loading: job };
@@ -212,8 +249,15 @@
       let p;
       const on = S().voice && !S().mute;
       if (G.TEST) p = new Promise(r => setTimeout(r, 40));
-      else if (on && this.has(id) && A.ok) p = this.playPack(id, token);
-      else if (on && S().tts) p = this.tts(text, token);
+      else if (on && this.has(id)) {
+        // Есть запись Марины — ждём, пока звук проснётся (до 1,5 с), и только если не проснулся — голос браузера
+        p = A.runWait(1500).then(ok => {
+          if (this.token !== token) return;
+          this.mode = ok ? 'pack' : 'tts';
+          return ok ? this.playPack(id, token) : (S().tts ? this.tts(text, token) : undefined);
+        });
+      }
+      else if (on && S().tts) { this.mode = 'tts'; p = this.tts(text, token); }
       else p = new Promise(r => { const t = setTimeout(r, 700 + text.length * 55); token.stop = () => { clearTimeout(t); r(); }; });
       const fin = () => { if (this.token === token) { this.token = null; this.speaking = false; A.duck(false); G.emit('speak', { on: false, id }); } };
       return p.then(fin, fin);
