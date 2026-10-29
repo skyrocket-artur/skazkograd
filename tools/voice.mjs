@@ -7,6 +7,11 @@
 //
 // Ключ берётся из переменной ELEVENLABS_API_KEY. Уже сгенерированные реплики с тем же текстом
 // не перегенерируются (кэш в audio/src/). Нужен ffmpeg.
+//
+// Ударения: перед отправкой в ElevenLabs в каждое слово из tools/stress.txt ставится знак
+// ударения (U+0301) — без него голос ошибается («те́ремок»). Слова, которых нет в словаре,
+// останавливают генерацию: допиши их в stress.txt.
+//   node tools/voice.mjs --text <id>             показать, что уйдёт в ElevenLabs
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -32,6 +37,27 @@ function loadLines() {
   return G._l;
 }
 const packOf = id => (/^w\d+_/.test(id) ? id.split('_')[0] : 'c');
+
+const ACC = '\u0301', VOW = /[аеёиоуыэюя]/gi;
+function loadStress() {
+  const d = {};
+  for (const ln of fs.readFileSync(path.join(ROOT, 'tools/stress.txt'), 'utf8').split('\n')) {
+    if (ln.startsWith('#')) continue;
+    for (const w of ln.split(/\s+/).filter(Boolean)) d[w.replace(ACC, '').toLowerCase()] = w.toLowerCase();
+  }
+  return d;
+}
+// Текст для озвучки: ударения по словарю, регистр букв как в исходнике
+function accented(text, dict, missing) {
+  return text.replace(/[А-Яа-яЁё\u0301]+/g, w => {
+    const vowels = (w.match(VOW) || []).length;
+    if (w.includes(ACC) || /ё/i.test(w) || vowels < 2) return w;
+    const m = dict[w.toLowerCase()];
+    if (!m) { missing.add(w.toLowerCase()); return w; }
+    const i = m.indexOf(ACC);
+    return w.slice(0, i) + ACC + w.slice(i);
+  });
+}
 
 async function tts(voice, text, out) {
   const r = await fetch(`${API}/text-to-speech/${voice}?output_format=mp3_44100_128`, {
@@ -59,12 +85,25 @@ if (args.includes('--sample')) {
   process.exit(0);
 }
 
+const stressDict = loadStress();
+if (args.includes('--text')) {
+  const L = loadLines(), miss = new Set();
+  console.log(accented(L[arg('--text')] || '', stressDict, miss));
+  if (miss.size) console.log('нет в словаре:', [...miss].join(' '));
+  process.exit(0);
+}
+
 const voice = arg('--voice') || cfg.voice;
 if (!voice) { console.error('Укажи голос: --voice <voice_id> (список: --voices)'); process.exit(1); }
 fs.writeFileSync(CFG, JSON.stringify({ ...cfg, voice, model, settings }, null, 2));
 fs.mkdirSync(SRC, { recursive: true });
 
 const lines = loadLines();
+{
+  const miss = new Set();
+  for (const id in lines) lines[id] = accented(lines[id], stressDict, miss);
+  if (miss.size) { console.error('Нет ударения в tools/stress.txt для слов:', [...miss].join(' ')); process.exit(1); }
+}
 const idxFile = path.join(SRC, 'index.json');
 const idx = fs.existsSync(idxFile) ? JSON.parse(fs.readFileSync(idxFile, 'utf8')) : {};
 const ids = Object.keys(lines);

@@ -173,8 +173,9 @@
           repkaAt(api, c, rx, gy, rh, p * 0.08, -p * 0.06);
           // цепочка: каждый держится за того, кто впереди
           const hh = Math.min(H * 0.24, W * 0.36), pos = [];
-          let x = rx + rh * 0.34;
-          team.forEach(m => { const h = hh * HT[m.n], w = G.art.width(m.n, h); pos.push([m, x + w * 0.5 + (1 - m.k) * W * 0.7, h, w]); x += w * 0.6; });
+          // дед вплотную к репке (заходит на неё), остальные — вплотную друг за другом
+          let x = rx + rh * 0.1;
+          team.forEach(m => { const h = hh * HT[m.n], w = G.art.width(m.n, h); pos.push([m, x + w * 0.5 + (1 - m.k) * W * 0.7, h, w]); x += w * 0.5; });
           for (let i = pos.length - 1; i >= 0; i--) {
             const [m, cx, h, w] = pos[i];
             shadow(c, cx, gy + 4, w * 0.8);
@@ -221,7 +222,7 @@
         const W = api.W, H = api.H, n = slots.length || 3;
         const x0 = showRepka ? W * 0.24 : W * 0.08, x1 = W * 0.96;
         const land = W > H;
-        sp = (x1 - x0) / n; tsp = (land ? W - 100 : W) / ((tray.length || 3) + 1);
+        sp = (x1 - x0) / n; tsp = (land ? W - 100 : Math.min(W, api.hintBox().x + 24)) / ((tray.length || 3) + 1); // правее — кнопка подсказки
         hm = Math.min(H * 0.22, sp * 2.3); hmT = land ? Math.min(H * 0.3, tsp * 2, H * 0.86 - bg.gy - 50) : Math.min(H * 0.17, tsp * 2);
         slots.forEach((s, i) => { s.x = x0 + sp * (i + 0.5); s.y = bg.gy + 2; });
         const stag = tray.length > 4 && !land;

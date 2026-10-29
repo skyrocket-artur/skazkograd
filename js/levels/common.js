@@ -97,5 +97,7 @@
     c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath();
   }
 
-  G.lv = { FOREST, forest, shadow, roundRect, U };
+  // Точка (с радиусом r) задевает кнопку подсказки в правом нижнем углу?
+  const underHint = (api, x, y, r = 0) => { const b = api.hintBox(); return x + r > b.x && y + r > b.y; };
+  G.lv = { FOREST, forest, shadow, roundRect, U, underHint };
 })();

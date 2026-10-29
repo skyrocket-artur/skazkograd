@@ -3,3 +3,5 @@ audio/samples/
 .DS_Store
 .playwright-mcp/
 GAME_PLAN.md
+.venv/
+__pycache__/

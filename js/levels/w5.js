@@ -2,7 +2,7 @@
 // Мир 5 «Золотая рыбка»: «Ну, погоди!» с неводом (до десяти), мячик-рогатка с гласными, ракушки по корзинкам 1–10,
 // «Одна да одна» — сложение до пяти, финал — каждый друг загадывает загадку, рыбка исполняет желания.
 (function () {
-  const { shadow, roundRect } = G.lv;
+  const { shadow, roundRect, underHint } = G.lv;
   const FISH = ['fish', 'fish_o', 'fish_g', 'fish_p'];
 
   // ---------- море: небо (если есть поверхность), вода с лучами, песок; водоросли и пузырьки ----------
@@ -203,6 +203,8 @@
         bg.resize();
         const W = api.W, H = api.H;
         gy = H * 0.88; bs = Math.min(W * 0.15, H * 0.12); rr = Math.min(W, H) * 0.035;
+        // нижние коробки правой башни не прячем под кнопку подсказки
+        if (underHint(api, W * 0.82 + bs * 0.5, gy)) gy = Math.max(H * 0.7, Math.min(gy, api.hintBox().y));
         sx = W * 0.18; sy = gy - H * 0.16; g = H * 1.6; maxPull = Math.min(W, H) * 0.2;
         if (ball.st !== 'fly') { ball.x = sx; ball.y = sy; }
         stack();
@@ -347,9 +349,11 @@
       function layout() {
         bg.resize();
         const W = api.W, H = api.H, n = baskets.length || 3;
-        bh = Math.min(W * 0.8 / n / 1.18, H * 0.16); ss = Math.min(bh * 0.85, H * 0.11);
+        // корзинки в ряд левее кнопки подсказки
+        const x0 = W * 0.05, x1 = Math.min(W * 0.83, api.hintBox().x + 6);
+        bh = Math.min((x1 - x0) / n / 1.12, H * 0.16); ss = Math.min(bh * 0.85, H * 0.11);
         rim = H * 0.86 - bh * 0.5; top = Math.max(110, H * 0.16);
-        baskets.forEach((b, i) => { b.x = W * (0.07 + 0.76 * (i + 0.5) / n); });
+        baskets.forEach((b, i) => { b.x = x0 + (x1 - x0) * (i + 0.5) / n; });
         if (shell) { shell.top = top; const b = baskets[shell.col]; if (b) shell.tx = b.x; }
       }
       function spawn() {

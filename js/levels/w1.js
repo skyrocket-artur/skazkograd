@@ -172,16 +172,20 @@
       function layout() {
         bg.resize();
         const W = api.W, H = api.H, gy = bg.gy;
-        const topY = H * 0.36, botY = H * 0.53, rise = H * 0.1, lx = W * 0.24, rx = W * 0.76;
+        // Медведь крупный, корзинка у него в лапе: вверху — на уровне головы, внизу — у живота.
+        // Жёлоба кончаются прямо над корзинкой, поэтому лапа короткая и растёт из плеча, а не из головы.
+        const bearH = Math.min(H * 0.38, W * 0.5), bearW = bearH * 200 / 228;
+        const bh = G.clamp(Math.min(W * 0.2, H * 0.1), 50, 120);
+        const reach = bearW * 0.5 + bh * 0.45, rise = H * 0.13;
+        const topBy = gy - bearH * 0.68, botBy = gy - bearH * 0.16;
         L = {
-          gy, br: G.clamp(U(api) * 4.6, 16, 34), bh: G.clamp(Math.min(W * 0.2, H * 0.1), 50, 120),
-          bearH: Math.min(H * 0.25, W * 0.48), split: (topY + botY) / 2,
-          ch: [
-            { sx: -20, sy: topY - rise, ex: lx, ey: topY, side: -1 }, { sx: -20, sy: botY - rise, ex: lx, ey: botY, side: -1 },
-            { sx: W + 20, sy: topY - rise, ex: rx, ey: topY, side: 1 }, { sx: W + 20, sy: botY - rise, ex: rx, ey: botY, side: 1 }
-          ]
+          gy, br: G.clamp(U(api) * 4.6, 16, 34), bh, bearH,
+          shX: bearH * 0.2, shY: gy - bearH * 0.23, split: (topBy + botBy) / 2 - bh * 0.62,
+          ch: [[-1, topBy], [-1, botBy], [1, topBy], [1, botBy]].map(([side, by]) => {
+            const ex = W / 2 + side * (reach + W * 0.035), ey = by - bh * 0.62;
+            return { sx: side < 0 ? -20 : W + 20, sy: ey - rise, ex, ey, side, bx: W / 2 + side * reach, by };
+          })
         };
-        L.ch.forEach(c => { c.bx = c.ex - c.side * W * 0.035; c.by = c.ey + L.bh * 0.62; });
         bk.x = L.ch[pos].bx; bk.y = L.ch[pos].by;
       }
       layout();
@@ -284,13 +288,21 @@
           c.fillStyle = '#B9C9A0'; roundRect(c, px, py, pw, ph, 10); c.fill();
           c.fillStyle = '#2E3B2A'; c.font = '900 30px Nunito, ui-rounded, system-ui, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
           c.fillText(R ? `${Math.min(caught, R.need)} / ${R.need}` : '0', W / 2, py + ph / 2 + 2);
-          // медведь с корзинкой
-          const bx = W / 2, side = bk.x < bx ? -1 : 1;
+          // медведь с корзинкой: рабочая лапа из плеча (за туловищем), вторая опущена вдоль бока
+          const bx = W / 2, side = bk.x < bx ? -1 : 1, aw = L.bearH * 0.1;
+          const arm = (x0, y0, x1, y1, ex, ey) => {
+            c.lineCap = 'round';
+            c.strokeStyle = '#7A4A2A'; c.lineWidth = aw * 1.25; c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(ex, ey, x1, y1); c.stroke();
+            c.strokeStyle = '#A5683E'; c.lineWidth = aw; c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(ex, ey, x1, y1); c.stroke();
+          };
+          const paw = (x, y) => { c.fillStyle = '#7A4A2A'; c.beginPath(); c.arc(x, y, aw * 0.72, 0, 7); c.fill(); c.fillStyle = '#C98A57'; c.beginPath(); c.arc(x, y, aw * 0.55, 0, 7); c.fill(); };
+          const sx = bx + side * L.shX, hx = bk.x, hy = bk.y - L.bh * 0.3;
           shadow(c, bx, L.gy + 4, L.bearH * 0.75);
+          arm(sx, L.shY, hx, hy, (sx + hx) / 2 + side * L.bearH * 0.05, Math.max(L.shY, hy) + L.bearH * 0.06);
           G.art.draw(c, 'bear', bx, L.gy + L.bearH * 0.04, L.bearH, { anchor: 'b', flip: side > 0 });
-          const shX = bx + side * L.bearH * 0.24, shY = L.gy - L.bearH * 0.42;
-          c.strokeStyle = '#8F5733'; c.lineWidth = L.bearH * 0.09; c.lineCap = 'round';
-          c.beginPath(); c.moveTo(shX, shY); c.quadraticCurveTo((shX + bk.x) / 2, Math.max(shY, bk.y) + 10, bk.x, bk.y - L.bh * 0.3); c.stroke();
+          const ox = bx - side * L.shX * 1.05;
+          arm(ox, L.shY - aw * 0.2, ox - side * L.bearH * 0.06, L.shY + L.bearH * 0.13, ox - side * L.bearH * 0.07, L.shY + L.bearH * 0.04);
+          paw(ox - side * L.bearH * 0.06, L.shY + L.bearH * 0.13);
           G.art.draw(c, 'basket_back', bk.x, bk.y, L.bh);
           inBasket.slice(-5).forEach((b, i, a) => G.art.draw(c, 'berry_red', bk.x + (i - (a.length - 1) / 2) * L.bh * 0.24, bk.y - L.bh * 0.2, L.bh * 0.3 * b.p));
           for (const b of berries) {
@@ -299,7 +311,7 @@
             c.restore();
           }
           G.art.draw(c, 'basket_front', bk.x, bk.y, L.bh);
-          c.fillStyle = '#C98A57'; c.beginPath(); c.arc(bk.x, bk.y - L.bh * 0.3, L.bearH * 0.06, 0, 7); c.fill();
+          paw(hx, hy);
         },
         down(p) {
           if (!L) return;
@@ -342,7 +354,7 @@
         const W = api.W, H = api.H;
         bw = Math.min(W * 0.34, H * 0.22); P = Math.min(W * 0.24, H * 0.14);
         const pos = [[0.18, 0.6], [0.5, 0.58], [0.82, 0.6], [0.3, 0.82], [0.7, 0.82]];
-        if (!slots.length) slots = pos.map(([x, y], i) => ({ i, st: 'idle', k: 0, front: i > 2 }));
+        if (!slots.length) slots = pos.map(([x, y], i) => ({ i, st: 'idle', k: 0, shake: 0, front: i > 2 }));
         slots.forEach((s, i) => { s.x = W * pos[i][0]; s.y = H * pos[i][1]; });
       }
       layout();

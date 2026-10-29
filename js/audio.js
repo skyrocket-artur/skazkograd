@@ -321,6 +321,7 @@
     V.pickVoice();
     try { speechSynthesis.addEventListener('voiceschanged', () => V.pickVoice()); } catch (e) { /* ok */ }
   }
-  // Регистрация реплик: G.lines({ id: 'текст' })
-  G.lines = obj => Object.assign(V.lines, obj);
+  // Регистрация реплик: G.lines({ id: 'текст' }). Знаки ударения (U+0301) нужны только озвучке —
+  // в субтитрах и голосе браузера их нет.
+  G.lines = obj => { for (const k in obj) V.lines[k] = obj[k].replace(/\u0301/g, ''); };
 })();

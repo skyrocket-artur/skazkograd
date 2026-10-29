@@ -2,7 +2,7 @@
 // Мир 4 «Три медведя»: раскладка по размеру, лабиринт с грибами 1→8 (Pac-Man), окошки с буквами И и Ы (тир),
 // «Малина» — группы из трёх ягод, босс — чай для гостей: сколько гостей, столько чашек.
 (function () {
-  const { FOREST, forest, shadow, roundRect } = G.lv;
+  const { FOREST, forest, shadow, roundRect, underHint } = G.lv;
   const BEARS = ['bear', 'bear_mama', 'mishutka'], BK = [1, 0.82, 0.6], IK = [1, 0.7, 0.48], TO = ['w4_to_papa', 'w4_to_mama', 'w4_to_small'];
 
   // ---------- изба: стена из брёвен, окно с занавесками, пол с половиком (рисуется один раз) ----------
@@ -59,7 +59,7 @@
     const bh = () => Math.min(api.H * 0.3, api.W * 0.38);
     const itemW = () => Math.min(api.W * 0.24, api.H * 0.16);
     const trayY = () => api.H * 0.88;
-    const tx = k => api.W * [0.18, 0.42, 0.66][k];
+    const tx = k => api.W * [0.16, 0.38, 0.6][k]; // правее — кнопка подсказки
     const ih = it => itemW() * IK[it.size] / G.art.size(it.art)[0] * G.art.size(it.art)[1];
     const spotY = () => by() + api.H * 0.05;
     S.layout = () => S.items.forEach(it => {
@@ -232,8 +232,10 @@
       function layout() {
         const W = api.W, H = api.H;
         top = Math.max(150, H * 0.2);
-        const bot = H * 0.96;
+        let bot = H * 0.96;
         cs = Math.min(W * 0.94 / cols, (bot - top) / rows);
+        // правый нижний угол лабиринта не должен уходить под кнопку подсказки
+        if (underHint(api, W / 2 + cols * cs / 2, bot)) { bot = Math.min(bot, api.hintBox().y); cs = Math.min(W * 0.94 / cols, (bot - top) / rows); }
         ox = W / 2 - cols * cs / 2; oy = top + ((bot - top) - rows * cs) / 2;
         prerender();
         ms.x = cx(ms.c); ms.y = cy(ms.r); path = [];
@@ -485,8 +487,10 @@
         bg.resize();
         const W = api.W, H = api.H, land = W > H;
         top = Math.max(150, H * 0.2);
-        const bot = H * (land ? 0.97 : 0.88);
-        cs = Math.min(W * 0.9 / cols, (bot - top) / rows); ox = W / 2 - cols * cs / 2; oy = top + (bot - top - rows * cs) / 2;
+        let bot = H * (land ? 0.97 : 0.88);
+        cs = Math.min(W * 0.9 / cols, (bot - top) / rows);
+        if (underHint(api, W / 2 + cols * cs / 2, bot)) { bot = Math.min(bot, api.hintBox().y); cs = Math.min(W * 0.9 / cols, (bot - top) / rows); }
+        ox = W / 2 - cols * cs / 2; oy = top + (bot - top - rows * cs) / 2;
       }
       const cell = t => ({ t, y: 0, vy: 0, wob: 0 });
       function group(c, r) {

@@ -45,6 +45,12 @@
       const api = {
         def,
         get W() { return W; }, get H() { return H; }, get dpr() { return dpr; },
+        // Где кнопка подсказки (в координатах сцены, с запасом под палец): цели туда класть нельзя
+        hintBox() {
+          const r = hintBtn.getBoundingClientRect(), c = cv.getBoundingClientRect();
+          if (!r.width) return { x: W - 100, y: H - 100 };
+          return { x: r.left - c.left - 12, y: r.top - c.top - 12 };
+        },
         get t() { return rt.time; },
         alive: () => alive,
         after(sec, fn) { if (alive) rt.timers.push({ at: rt.time + sec, fn }); },
@@ -68,6 +74,7 @@
           if (o.ring !== false) rt.fx.push({ x, y, vx: 0, vy: 0, life: 0, max: 0.45, size: o.ringSize || 60, color: '#FFFFFF', kind: 'ring' });
         },
         finger(x, y, tap = true) {
+          if (G.TEST) (G.fingerLog = G.fingerLog || []).push({ lvl: def.id, x: Math.round(x), y: Math.round(y) });
           finger.style.transform = `translate(${x - 18}px, ${y - 6}px)`;
           finger.classList.toggle('tap', tap);
           finger.classList.add('on');
@@ -184,8 +191,8 @@
           f.x += f.vx * dt; f.y += f.vy * dt; f.vy += 520 * dt; f.vx *= 0.98; f.rot += dt * 4;
         }
         if (rt.waiting && rt.time - rt.idleAt > 7) showHint();
-        if (G.AUTO && scene && scene.auto && (rt.autoT = (rt.autoT || 0) + dt) > 0.12) { rt.autoT = 0; safe(() => scene.auto()); }
-        if (G.AUTO && choosing && (rt.autoC = (rt.autoC || 0) + dt) > 0.5) { rt.autoC = 0; choosing.auto(); }
+        if (G.AUTO && scene && scene.auto && (rt.autoT = (rt.autoT || 0) + dt) > G.AUTO_WAIT) { rt.autoT = 0; safe(() => scene.auto()); }
+        if (G.AUTO && choosing && (rt.autoC = (rt.autoC || 0) + dt) > Math.max(0.5, G.AUTO_WAIT)) { rt.autoC = 0; choosing.auto(); }
         if (scene && scene.update) safe(() => scene.update(dt));
       }
       function drawFx() {

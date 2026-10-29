@@ -2,7 +2,7 @@
 // Мир 2 «Теремок»: Тетрис из брёвен, мемори «кто в теремочке живёт», окошки-фигуры,
 // Змейка «лягушка и буква О», босс — теремок на пять этажей.
 (function () {
-  const { FOREST, forest, shadow, roundRect, U } = G.lv;
+  const { FOREST, forest, shadow, roundRect, U, underHint } = G.lv;
   const meadow = (api, ground) => forest(api, { ground, trees: 0.45, flowers: true, sky1: '#86CFF7', sky2: '#D6F0FF', ground1: '#8ED46A', ground2: '#5AAE4C' });
   const SAYA = { mouse: 'w2_a_mouse', frog: 'w2_a_frog', hare: 'w2_a_hare', fox: 'w2_a_fox', wolf_plain: 'w2_a_wolf', bear: 'w2_a_bear' };
 
@@ -294,7 +294,10 @@
         F.w = Math.min(W * 0.86, cols * S * 1.85 + S * 0.5); F.h = rows * S * 1.5 + S * 0.55;
         F.x = W / 2 - F.w / 2; F.y = bg.gy - F.h;
         holes.forEach((hl, i) => { hl.x = F.x + F.w * ((i % cols) + 0.5) / cols; hl.y = F.y + S * 0.3 + (Math.floor(i / cols) + 0.5) * S * 1.5; });
-        const ty = bg.gy + (H - bg.gy) * 0.48;
+        // фигуры лежат на траве; если крайняя правая задевает кнопку подсказки — ряд выше
+        let ty = bg.gy + (H - bg.gy) * 0.48;
+        const n2 = pieces.length || 3;
+        if (underHint(api, W * n2 / (n2 + 1), ty, S * 0.65)) ty = Math.max(bg.gy + S * 0.7, api.hintBox().y - S * 0.65);
         pieces.forEach((p, i) => { p.hx = W * (i + 1) / (pieces.length + 1); p.hy = ty; if (!p.hole && p !== drag) { p.x = p.hx; p.y = p.hy; } });
       }
       const sayOf = (kind, color) => R && R.color ? `w2_s_${color}_${kind}` : 'w2_s_' + kind;
@@ -425,6 +428,7 @@
         for (let k = 0; k < 40; k++) {
           const x = G.rand(P.x + m, P.x + P.w - m), y = G.rand(P.y + m, P.y + P.h - m);
           if (Math.hypot(x - frog.x, y - frog.y) < frog.r * 3.5) continue;
+          if (underHint(api, x, y, frog.r)) continue;
           if (items.some(it => !it.gone && Math.hypot(it.x - x, it.y - y) < frog.r * 2.2)) continue;
           return { x, y };
         }

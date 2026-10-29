@@ -1,7 +1,7 @@
 // Офлайн-кэш. Игра работает и без него (во встроенном браузере Instagram на iPhone его нет).
 // Файлы кладутся по одному: если один не скачался, остальные всё равно в кэше.
 // Версию меняет tools/bump.mjs — вместе с ?v= в index.html.
-const V = 7;
+const V = 8;
 const CACHE = 'skazkograd-' + V;
 const Q = '?v=' + V;
 const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',
