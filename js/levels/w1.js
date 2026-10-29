@@ -296,7 +296,8 @@
             c.strokeStyle = '#A5683E'; c.lineWidth = aw; c.beginPath(); c.moveTo(x0, y0); c.quadraticCurveTo(ex, ey, x1, y1); c.stroke();
           };
           const paw = (x, y) => { c.fillStyle = '#7A4A2A'; c.beginPath(); c.arc(x, y, aw * 0.72, 0, 7); c.fill(); c.fillStyle = '#C98A57'; c.beginPath(); c.arc(x, y, aw * 0.55, 0, 7); c.fill(); };
-          const sx = bx + side * L.shX, hx = bk.x, hy = bk.y - L.bh * 0.3;
+          // лапа держит корзинку сбоку за стенку (ближнюю к медведю), а не сверху — ягодки внутри видны
+          const sx = bx + side * L.shX, hx = bk.x - side * L.bh * 0.42, hy = bk.y + L.bh * 0.2;
           shadow(c, bx, L.gy + 4, L.bearH * 0.75);
           arm(sx, L.shY, hx, hy, (sx + hx) / 2 + side * L.bearH * 0.05, Math.max(L.shY, hy) + L.bearH * 0.06);
           G.art.draw(c, 'bear', bx, L.gy + L.bearH * 0.04, L.bearH, { anchor: 'b', flip: side > 0 });
@@ -304,7 +305,7 @@
           arm(ox, L.shY - aw * 0.2, ox - side * L.bearH * 0.06, L.shY + L.bearH * 0.13, ox - side * L.bearH * 0.07, L.shY + L.bearH * 0.04);
           paw(ox - side * L.bearH * 0.06, L.shY + L.bearH * 0.13);
           G.art.draw(c, 'basket_back', bk.x, bk.y, L.bh);
-          inBasket.slice(-5).forEach((b, i, a) => G.art.draw(c, 'berry_red', bk.x + (i - (a.length - 1) / 2) * L.bh * 0.24, bk.y - L.bh * 0.2, L.bh * 0.3 * b.p));
+          inBasket.slice(-5).forEach((b, i, a) => G.art.draw(c, 'berry_red', bk.x + (i - (a.length - 1) / 2) * L.bh * 0.19, bk.y - L.bh * 0.2, L.bh * 0.3 * b.p));
           for (const b of berries) {
             c.save(); c.globalAlpha = Math.max(0, b.a);
             G.art.draw(c, b.blue ? 'berry_blue' : 'berry_red', b.x, b.y, L.br * 2, { rot: b.rot });

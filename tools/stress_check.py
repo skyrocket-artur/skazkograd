@@ -48,6 +48,7 @@ def load_dict():
     for ln in open(os.path.join(ROOT, 'tools/stress.txt'), encoding='utf8'):
         if ln.startswith('#'): continue
         for w in ln.split():
+            w = w.lstrip('!')  # «!» — знак уходит в озвучку; для проверки неважно
             d[w.replace(ACC, '').lower()] = w.lower()
     return d
 

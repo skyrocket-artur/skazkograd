@@ -8,9 +8,10 @@
 // Ключ берётся из переменной ELEVENLABS_API_KEY. Уже сгенерированные реплики с тем же текстом
 // не перегенерируются (кэш в audio/src/). Нужен ffmpeg.
 //
-// Ударения: перед отправкой в ElevenLabs в каждое слово из tools/stress.txt ставится знак
-// ударения (U+0301) — без него голос ошибается («те́ремок»). Слова, которых нет в словаре,
-// останавливают генерацию: допиши их в stress.txt.
+// Ударения: в словах, отмеченных «!» в tools/stress.txt, перед отправкой в ElevenLabs ставится
+// знак ударения (U+0301) — на них голос ошибается сам («те́ремок»). Только в них: знак в каждом
+// слове делает речь медленной, с акцентом. Слова, которых нет в словаре, останавливают
+// генерацию: допиши их в stress.txt (по нему проверяет tools/stress_check.py).
 //   node tools/voice.mjs --text <id>             показать, что уйдёт в ElevenLabs
 import fs from 'node:fs';
 import path from 'node:path';
@@ -43,18 +44,22 @@ function loadStress() {
   const d = {};
   for (const ln of fs.readFileSync(path.join(ROOT, 'tools/stress.txt'), 'utf8').split('\n')) {
     if (ln.startsWith('#')) continue;
-    for (const w of ln.split(/\s+/).filter(Boolean)) d[w.replace(ACC, '').toLowerCase()] = w.toLowerCase();
+    for (const w of ln.split(/\s+/).filter(Boolean)) {
+      const force = w.startsWith('!'), m = w.replace('!', '').toLowerCase();
+      d[m.replace(ACC, '')] = { m, force };
+    }
   }
   return d;
 }
-// Текст для озвучки: ударения по словарю, регистр букв как в исходнике
+// Текст для озвучки: знак ударения только в словах с «!», регистр букв как в исходнике
 function accented(text, dict, missing) {
   return text.replace(/[А-Яа-яЁё\u0301]+/g, w => {
     const vowels = (w.match(VOW) || []).length;
     if (w.includes(ACC) || /ё/i.test(w) || vowels < 2) return w;
-    const m = dict[w.toLowerCase()];
-    if (!m) { missing.add(w.toLowerCase()); return w; }
-    const i = m.indexOf(ACC);
+    const e = dict[w.toLowerCase()];
+    if (!e) { missing.add(w.toLowerCase()); return w; }
+    if (!e.force) return w;
+    const m = e.m, i = m.indexOf(ACC);
     return w.slice(0, i) + ACC + w.slice(i);
   });
 }
