@@ -259,7 +259,8 @@
           const a = cards.find(x => x.st === 'down'); if (!a) return;
           const b = pairOf(a); busy = true; api.say('c_hint');
           flip(a, true); flip(b, true);
-          api.after(1.1, () => { flip(a, false); flip(b, false); api.after(0.3, () => { busy = false; }); });
+          // показали пару — закрыли — и палец на одну из них: малышу трудно запомнить сразу обе
+          api.after(1.1, () => { flip(a, false); flip(b, false); api.after(0.3, () => { busy = false; api.finger(a.x, a.y); }); });
         },
         auto() {
           if (busy || !R) return;
@@ -488,7 +489,8 @@
           const sp = R.speed * Math.min(api.W, api.H);
           if (tgt) {
             const d = Math.hypot(tgt.x - frog.x, tgt.y - frog.y);
-            if (d > frog.r * 0.5) {
+            if (!tgt.hold && d < frog.r * 0.6) tgt = null;
+            else if (d > frog.r * 0.5) {
               const want = Math.atan2(tgt.y - frog.y, tgt.x - frog.x);
               const da = ((want - frog.a + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
               frog.a += G.clamp(da, -6 * dt, 6 * dt);
@@ -535,9 +537,10 @@
           G.art.draw(c, 'frog', frog.x, frog.y, fr, { flip: frog.flip, rot: Math.sin(api.t * 6) * 0.06 });
           if (tgt && active) { c.strokeStyle = 'rgba(255,255,255,.7)'; c.lineWidth = 3; c.beginPath(); c.arc(tgt.x, tgt.y, 16 + Math.sin(api.t * 8) * 3, 0, 7); c.stroke(); }
         },
-        down(p) { tgt = { x: p.x, y: p.y }; },
-        move(p) { if (tgt) { tgt.x = p.x; tgt.y = p.y; } },
-        up() { tgt = null; },
+        // Можно вести пальцем, а можно просто нажать: лягушка доплывёт до места касания
+        down(p) { tgt = { x: p.x, y: p.y, hold: true }; },
+        move(p) { if (tgt && tgt.hold) { tgt.x = p.x; tgt.y = p.y; } },
+        up() { if (tgt) tgt.hold = false; },
         hint() { const o = nearestO(); if (o) { api.finger(o.x, o.y); api.say('c_hint'); } },
         auto() { const o = nearestO(); tgt = o ? { x: o.x, y: o.y } : null; }
       };
@@ -553,7 +556,7 @@
     create(api) {
       const bg = meadow(api, 0.88);
       const T = tower(api, bg, { cols: 3, floors: 5, countLogs: false });
-      const bear = { x: 1.4, j: 0 };
+      const bear = { x: -0.4, j: 0 }; // медведь приходит слева: справа внизу кнопка подсказки
       let waitBear = null;
       const resize = () => { bg.resize(); T.layout(); };
       resize();
@@ -574,7 +577,7 @@
             if (i === 1) api.round(1);
             if (i === 3) api.round(2);
           }
-          await api.tween(bear, { x: 0.82 }, 1.2, 'inOut');
+          await api.tween(bear, { x: 0.18 }, 1.2, 'inOut');
           await api.say('w2_l10_bear');
           api.say('w2_l10_roof'); api.expect(true);
           await new Promise(r => { waitBear = r; });
@@ -591,7 +594,7 @@
         update: dt => T.update(dt),
         draw(c) {
           bg.draw(c, 0); T.draw(c);
-          if (bear.x < 1.3) { const b = bearPos(); shadow(c, b.x, b.y, b.h * 0.7); G.art.draw(c, 'bear', b.x, b.y - bear.j * b.h * 0.2, b.h, { anchor: 'b' }); }
+          if (bear.x > -0.3) { const b = bearPos(); shadow(c, b.x, b.y, b.h * 0.7); G.art.draw(c, 'bear', b.x, b.y - bear.j * b.h * 0.2, b.h, { anchor: 'b' }); }
         },
         down(p) {
           if (waitBear) { const f = waitBear; waitBear = null; f(); return; }

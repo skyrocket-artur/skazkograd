@@ -96,7 +96,7 @@
       h('div', { class: 'splash-bottom' }, play, h('small', null, 'для детей 3–4 лет · без рекламы')));
     play.addEventListener('click', () => {
       G.audio.wake(); G.sfx.tap();
-      if (!S().greeted) { S().greeted = true; save(); G.voice.sayWhenReady('c_hello'); }
+      if (!S().greeted) { S().greeted = true; save(); G.voice.sayWhenReady('c_hello', 12000); }
       ui.map();
     });
     ui.mount(el);
@@ -181,7 +181,7 @@
     back.addEventListener('click', () => { G.sfx.tap(); ui.map(); });
     ui.mount(el);
     prepareWorld(w, p => { loader.firstChild.style.width = Math.round(p * 100) + '%'; }).then(() => loader.classList.add('hide'));
-    if (!S()['seen_' + w.id]) { S()['seen_' + w.id] = true; save(); G.voice.sayWhenReady(w.intro, 4000); }
+    if (!S()['seen_' + w.id]) { S()['seen_' + w.id] = true; save(); G.voice.sayWhenReady(w.intro, 15000); }
     else if (justDone && next) G.voice.say('c_next');
   };
 

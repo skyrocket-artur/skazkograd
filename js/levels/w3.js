@@ -449,7 +449,7 @@
     create(api) {
       let W = 1, H = 1, d = 100, lw = 100, lh = 40, g = 1000, V = 600, cam = 0;
       const duck = { x: 0, y: 0, vy: 0, right: true, sq: 1, home: null, save: false };
-      let rows = [], tgtX = null, R = null, count = 0, saidBad = false, topRow = 0, mamaRes = null;
+      let rows = [], tgtX = null, tgtY = null, R = null, count = 0, saidBad = false, topRow = 0, mamaRes = null;
       const BANK = () => H * 0.9;
       const LET = ['А', 'О', 'М', 'К', 'Ш'];
       function layout() {
@@ -496,10 +496,12 @@
           if (count >= R.need) { R.done = true; api.expect(false); api.after(0.7, () => { const f = R.res; R.res = null; f && f(); }); }
         }
       }
+      // Промахнулся — возвращаем на свой лист и подбрасываем с него. Раньше ставили над листом и
+      // отпускали падать: если палец держат на цели, утёнка сносило мимо листа, и так по кругу.
       function rescue() {
         const h = duck.home, hx = h ? h.x : W / 2, hy = h ? h.y : BANK();
-        duck.save = true; tgtX = hx; api.sfx('whoosh');
-        api.tween(duck, { x: hx, y: hy - d * 0.9 }, 0.55, 'inOut').then(() => { duck.save = false; duck.vy = 0; });
+        duck.save = true; tgtX = hx; tgtY = null; api.sfx('whoosh');
+        api.tween(duck, { x: hx, y: hy }, 0.55, 'inOut').then(() => { duck.save = false; duck.y = hy; duck.vy = -V; duck.sq = 0.65; });
       }
       const nextGood = () => { const k = duck.home ? duck.home.row + 1 : 1, r = rows.find(x => x.k === k); return r && r.good; };
       return {
@@ -525,7 +527,11 @@
           rows.forEach(r => r.leaves.forEach(l => { if (l.sink > 0) { l.sink += dt; if (l.sink > 2.4) l.sink = 0; } }));
           duck.sq += (1 - duck.sq) * Math.min(1, dt * 7);
           if (!duck.save) {
-            if (tgtX != null) { const dx = tgtX - duck.x, mx = W * 1.3 * dt; duck.x += G.clamp(dx, -mx, mx); if (Math.abs(dx) > 3) duck.right = dx > 0; }
+            // К листу выше утёнок летит, только когда он уже выше этого листа: если ребёнок нажал,
+            // пока утёнок падает обратно, раньше его сносило мимо своего листа в воду
+            const homeY = duck.home ? duck.home.y : BANK();
+            const canMove = tgtY == null || tgtY >= homeY - 1 || duck.y < tgtY - 2;
+            if (tgtX != null && canMove) { const dx = tgtX - duck.x, mx = W * 1.8 * dt; duck.x += G.clamp(dx, -mx, mx); if (Math.abs(dx) > 3) duck.right = dx > 0; }
             const py = duck.y;
             duck.vy += g * dt; duck.y += duck.vy * dt;
             if (duck.vy > 0) {
@@ -577,10 +583,11 @@
           const wy = p.y + cam;
           const l = rows.flatMap(r => r.leaves).find(l => Math.abs(l.x - p.x) < lw * 0.6 && Math.abs(l.y - wy) < lh * 1.6);
           tgtX = l ? l.x : p.x;
+          tgtY = l ? l.y : (duck.home ? duck.home.y : BANK()) - d;
         },
-        move(p) { tgtX = p.x; },
+        move(p) { tgtX = p.x; tgtY = (duck.home ? duck.home.y : BANK()) - d; },
         hint() { const l = nextGood(); if (l) { api.finger(l.x, l.y - cam + lh * 0.4); api.say('c_hint'); } },
-        auto() { const l = nextGood(); if (l) tgtX = l.x; }
+        auto() { const l = nextGood(); if (l) { tgtX = l.x; tgtY = l.y; } }
       };
     }
   });

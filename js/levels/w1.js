@@ -359,18 +359,18 @@
         slots.forEach((s, i) => { s.x = W * pos[i][0]; s.y = H * pos[i][1]; });
       }
       layout();
-      const picY = s => s.y - bushH(s) * 0.55 - P * 0.5 * s.k + P * 0.6 * (1 - s.k);
-      function pickItem() {
-        const wantGood = R.kind === 'pic' && !R.mix ? true
+      const picY = (s, k = s.k) => s.y - bushH(s) * 0.55 - P * 0.5 * k + P * 0.6 * (1 - k);
+      function pickItem(forceGood) {
+        const wantGood = forceGood || (R.kind === 'pic' && !R.mix) ? true
           : (!slots.some(s => s.st !== 'idle' && s.item && s.item.good) ? true : Math.random() < 0.45);
         if (R.kind === 'pic') return { kind: 'pic', name: G.pick(wantGood ? GOOD : BAD), good: wantGood };
         return { kind: 'let', ch: wantGood ? 'А' : G.pick(OTHER), good: wantGood };
       }
-      function spawn() {
+      function spawn(forceGood) {
         const free = slots.filter(s => s.st === 'idle' && s.i !== lastSlot);
         if (!free.length) return;
         const s = G.pick(free); lastSlot = s.i;
-        s.item = pickItem(); s.st = 'up'; s.until = api.t + R.stay;
+        s.item = pickItem(forceGood); s.st = 'up'; s.until = api.t + R.stay;
         api.tween(s, { k: 1 }, 0.35, 'back'); api.sfx('peek');
       }
       function hide(s) {
@@ -468,8 +468,9 @@
         },
         hint() {
           let s = slots.find(x => x.st === 'up' && x.item && x.item.good);
-          if (!s && active) { spawn(); s = slots.find(x => x.st === 'up' && x.item && x.item.good); }
-          if (s) { s.until = Math.max(s.until, api.t + 3); api.finger(s.x, picY(s)); api.say('c_hint'); }
+          if (!s && active) { spawn(true); s = slots.find(x => x.st === 'up' && x.item && x.item.good); }
+          // палец — туда, где картинка будет, когда выглянет целиком (а не в куст, откуда она только вылезает)
+          if (s) { s.until = Math.max(s.until, api.t + 3); api.finger(s.x, picY(s, 1)); api.say('c_hint'); }
         },
         auto() {
           const s = slots.find(x => x.st === 'up' && x.k > 0.9 && x.item && x.item.good);
@@ -570,7 +571,8 @@
         update(dt) {
           balls.forEach(b => {
             if (b.gone) return;
-            b.y -= b.rise * dt; b.wob = Math.max(0, b.wob - dt * 1.6);
+            if (!(b.hold > api.t)) b.y -= b.rise * dt; // по подсказке шарик ждёт, пока до него дотянутся
+            b.wob = Math.max(0, b.wob - dt * 1.6);
             if (b.y < -BR * 3.2) { if (R && R.done) b.gone = true; else b.y = api.H + BR * 1.5; }
           });
         },
@@ -608,7 +610,15 @@
           const b = hitAt(p);
           if (b && ((R.mode === 'order' && b.num === next) || (R.mode === 'two' && b.num === 2) || R.mode === 'any')) tap(b);
         },
-        hint() { const b = target(); if (b) { api.finger(bxOf(b), b.y); api.say(R.mode === 'order' ? 'w1_l4_need' + next : 'c_hint'); } },
+        hint() {
+          let b = target(), y = b && b.y;
+          // нужный шарик улетел за край — подплывает на виду
+          if (!b && R && !R.done) {
+            b = balls.find(x => !x.gone && (R.mode === 'order' ? x.num === next : R.mode === 'two' ? x.num === 2 : true));
+            if (b) { y = api.H * 0.62; api.tween(b, { y }, 0.5, 'out'); }
+          }
+          if (b) { b.hold = api.t + 3.5; api.finger(bxOf(b), y); api.say(R.mode === 'order' ? 'w1_l4_need' + next : 'c_hint'); }
+        },
         auto() { const b = target(); if (b) tap(b); }
       };
     }
